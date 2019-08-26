@@ -1,13 +1,19 @@
 <template>
   <div id="doorSize">
-    <span class="configurator-heading">Door size</span>
+    <span class="configurator-heading">{{$t("message.doorSize")}}</span>
     <form action class="size-form">
       <fieldset class="size-form__field">
-        Width:
-        <input type="number" class="size-form__input" v-model="doorWidth" min="100" max="160" />
+        {{$t("message.width")}}:
+        <input
+          type="number"
+          class="size-form__input"
+          v-model="doorWidth"
+          min="100"
+          max="160"
+        />
       </fieldset>
       <fieldset class="size-form__field">
-        Height:
+        {{$t("message.height")}}:
         <input
           type="number"
           class="size-form__input"

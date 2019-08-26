@@ -2,7 +2,7 @@
   <div id="type-info" class="info-container">
     <div class="info">
       <h1 class="info__heading">{{ $t("message.hello") }}</h1>
-      <div @click="closeWindow" class="info__close"></div>
+      <div @click="closeInfoWindow" class="info__close"></div>
       <div class="info__box-wrapper">
         <div class="info__type-box" v-for="val in types">
           <span class="info__type-box__type">{{ val }}</span>
@@ -22,7 +22,7 @@ export default {
     };
   },
   methods: {
-    closeWindow() {
+    closeInfoWindow() {
       this.$store.commit("typeInfo", false);
     }
   },

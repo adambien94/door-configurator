@@ -22,12 +22,12 @@
             class="configurations__nav__btn configurations__nav__btn--back"
             v-if="configStep > 1"
             @click="step(-1)"
-          >Back</button>
+          >{{ $t("message.back")}}</button>
           <button
             class="configurations__nav__btn"
             :disabled="configStep === 3"
             @click="step(1)"
-          >Next Step</button>
+          >{{ $t("message.nextStep")}}</button>
         </nav>
       </div>
     </div>
@@ -85,6 +85,7 @@ export default {
   created() {
     this.$store.commit("storeWidth", this.width);
     this.$store.commit("storeHeight", this.height);
+    this.$store.commit("logged", true);
   }
 };
 </script>
@@ -146,5 +147,6 @@ export default {
 
 .configurations__nav__btn:disabled {
   opacity: 0.2;
+  cursor: default;
 }
 </style>

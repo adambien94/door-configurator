@@ -1,8 +1,10 @@
 <template>
   <div id="doorType">
     <div class="heading-wrapper">
-      <span class="configurator-heading">Door type</span>
-      <button class="info-btn" @click="typeInfo()">i</button>
+      <div class="heading-wrapper">
+        <span class="configurator-heading">{{ $t("message.doorType") }}</span>
+        <button class="info-btn" @click="typeInfo()">i</button>
+      </div>
     </div>
     <form action class="type-form">
       <fieldset v-for="(val, index) in types">
@@ -14,7 +16,7 @@
           :value="index + 1"
           v-model="type"
         />
-        <label :for="'type' + index + 1" class="type-form__radio">{{val}}</label>
+        <label :for="'type' + index + 1" class="type-form__radio">{{$t("message." + val)}}</label>
       </fieldset>
     </form>
   </div>
@@ -26,7 +28,7 @@ export default {
   data() {
     return {
       type: null,
-      types: ["Single door", "Double door", "Triple door"]
+      types: ["singleDoor", "doubleDoor", "tripleDoor"]
     };
   },
   methods: {
@@ -58,16 +60,23 @@ fieldset {
   border: none;
 }
 
+.heading-wrapper {
+  position: relative;
+  display: inline-block;
+  width: auto;
+}
+
 .info-btn {
   display: block;
   position: absolute;
   width: 11px;
   height: 11px;
   border-radius: 50%;
-  background: #6991b2;
+  background: url("../../assets/info.svg");
+  background-size: cover;
   border: none;
   /* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ ?? sciezka do img */
-  left: 62px;
+  right: -14px;
   top: -3px;
   cursor: pointer;
   font-size: 8px;

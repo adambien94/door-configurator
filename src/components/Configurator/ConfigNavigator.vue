@@ -11,9 +11,9 @@
           disabled
         />
         <label :for="'step' + index + 1" class="steps__option">
-          step {{index + 1}}
+          {{ $t("message.step")}} {{index + 1}}
           <br />
-          {{step}}
+          {{ $t("message." + step)}}
         </label>
       </div>
     </nav>
@@ -25,7 +25,7 @@ export default {
   name: "configNavigator",
   data() {
     return {
-      steps: ["choose door", "choose door division", "choose color"]
+      steps: ["chooseDoor", "chooseDivision", "chooseColor"]
     };
   },
   computed: {
@@ -39,7 +39,7 @@ export default {
 <style scoped>
 .steps {
   margin: 22px auto 0 auto;
-  width: 359px;
+  width: 379px;
   display: flex;
   justify-content: space-between;
   list-style: none;

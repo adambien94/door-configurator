@@ -1,6 +1,6 @@
 <template>
   <div id="door-color">
-    <span class="configurator-heading">Choose color</span>
+    <span class="configurator-heading">{{ $t('message.chooseColor')}}</span>
     <form action class="color-form">
       <fieldset class="color-form__field" v-for="(color, colorName,index) in colors">
         <div class="color-form__color" :style="'background-color:' + color"></div>
@@ -13,7 +13,7 @@
           v-model="myCol"
           @click="storeColor(color)"
         />
-        <label :for="'col-' + index" class="color-form__radio">{{colorName}}</label>
+        <label :for="'col-' + index" class="color-form__radio">{{$t('colors.' + colorName)}}</label>
       </fieldset>
     </form>
   </div>
@@ -81,7 +81,7 @@ export default {
   color: #848c93;
   position: relative;
   cursor: default;
-  left: 19px;
+  padding-left: 19px;
   margin-top: 6px;
 }
 
@@ -92,6 +92,7 @@ export default {
   position: absolute;
   border-radius: 50%;
   top: 50%;
+  left: 0;
   transform: translateY(calc(-50% - 1px));
 }
 
@@ -100,16 +101,14 @@ export default {
   height: 15px;
   box-sizing: border-box;
   border: 3px solid #cddbe5;
-  right: calc(100% + 4.5px);
 }
 
 .color-form__radio:after {
   background: #6991b2;
   width: 7px;
   height: 7px;
-  right: calc(100% + 8.5px);
+  left: 4px;
   opacity: 0;
-  /* transition: opacity 0.05s; */
 }
 
 .radio:checked + .color-form__radio:after {

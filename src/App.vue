@@ -107,7 +107,6 @@ input[type="radio"] {
   position: relative;
   padding-bottom: 7px;
   border-bottom: 1px solid #f7f7f7;
-  width: 153px;
 }
 
 .blur {

@@ -8,7 +8,7 @@ export const store = new Vuex.Store({
     errorBarShow: false,
     error: "",
     processingShow: false,
-    configuratorPath: "http://localhost:8080/?#/configurator/120/250",
+    configuratorPath: "configurator/120/250",
     loggedIn: false,
     token: "",
     typeInfoShow: false,

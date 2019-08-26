@@ -1,12 +1,27 @@
 <template>
   <div id="login">
-    <h1 class="title">Log in</h1>
+    <h1 class="title">{{ $t("message.loginTitle") }}</h1>
     <form action class="log-form">
-      <input type="email" class="log-form__input" placeholder="Email address" v-model="email" />
-      <input type="password" class="log-form__input" placeholder="Password" v-model="password" />
+      <input
+        type="email"
+        class="log-form__input"
+        :placeholder="$t('message.email') "
+        v-model="email"
+      />
+      <input
+        type="password"
+        class="log-form__input"
+        :placeholder="$t('message.password') "
+        v-model="password"
+      />
       <input type="checkbox" id="keep-me" />
-      <label for="keep-me" class="log-form__checkbox">Keep me logged in</label>
-      <input type="submit" class="log-form__submit" value="Login" @click.prevent="post()" />
+      <label for="keep-me" class="log-form__checkbox">{{ $t("message.remember") }}</label>
+      <input
+        type="submit"
+        class="log-form__submit"
+        :value="$t('message.login')"
+        @click.prevent="post()"
+      />
     </form>
   </div>
 </template>
@@ -45,8 +60,8 @@ export default {
     },
     validSucced() {
       this.$store.commit("errorBar", false);
-      this.$store.commit("logged", true);
-      location.replace(this.configuratorPath);
+      // this.$store.commit("logged", true);
+      location.replace(window.location.href + this.configuratorPath);
     },
     validError() {
       this.$store.commit("errorMsg", "Invalid email or password...");
@@ -76,6 +91,9 @@ export default {
         this.validation();
       }
     }
+  },
+  created() {
+    this.$store.commit("logged", false);
   }
 };
 </script>

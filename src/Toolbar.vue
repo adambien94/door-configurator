@@ -2,23 +2,19 @@
   <div id="toolbar" class="bar">
     <img src="./assets/Logo.png" class="logo" />
     <div class="tools">
-      <!-- <form> -->
-      <label for="language" class="tools__select-label">Select language:</label>
-      <select name="language" class="tools__select">
-        <option value="language" v-for="language in languages">{{ language }}</option>
+      <label for="language" class="tools__select-label">{{ $t("message.selectLanguage")}}:</label>
+      <select name="language" class="tools__select" v-model="$i18n.locale">
+        <option
+          v-for="(lang, i) in langs"
+          :key="`Lang${i}`"
+          :value="lang"
+        >{{ $t("languages." + lang)}}</option>
       </select>
-      <!-- </form> -->
       <div class="tools__my-organization" @click="organizationShow = !organizationShow; get()">
-        My organization
+        {{ $t("message.myOrganization")}}
         <transition name="organization-transition">
           <organization v-if="organizationShow"></organization>
         </transition>
-      </div>
-      <button @click="test">hehe</button>
-      <div class="locale-changer">
-        <select v-model="$i18n.locale">
-          <option v-for="(lang, i) in langs" :key="`Lang${i}`" :value="lang">{{ lang }}</option>
-        </select>
       </div>
     </div>
   </div>
@@ -36,15 +32,9 @@ export default {
   },
   data() {
     return {
-      languages: ["Polish", "English"],
       organizationShow: false,
       langs: Object.keys(translation)
     };
-  },
-  methods: {
-    test() {
-      $i18n.locale = "en";
-    }
   },
   computed: {
     loggedIn() {
@@ -137,7 +127,7 @@ export default {
 }
 
 .organization-transition-leave-active {
-  animation: rollDown 0.15s ease-out reverse;
-  animation-delay: 0.075s;
+  animation: rollDown 0.125s ease-out reverse;
+  animation-delay: 0.05s;
 }
 </style>

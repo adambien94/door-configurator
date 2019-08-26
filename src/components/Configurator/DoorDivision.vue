@@ -1,24 +1,48 @@
 <template>
   <div id="door-division">
-    <span class="configurator-heading">Door division</span>
+    <span class="configurator-heading">{{$t("message.doorDivision")}}</span>
     <form action class="division-form">
       <fieldset class="division-form__field">
-        <label for class="division-form__label">Number of beams:</label>
+        <label for class="division-form__label">{{$t("message.numberOfBeams")}}:</label>
         <input type="number" class="division-form__input" v-model="beamsNum" />
-        <button class="division-form__btn" @click="beamsNum < 4 ? beamsNum++ : beamsNum">+</button>
-        <button class="division-form__btn" @click="beamsNum > 0 ? beamsNum-- : beamsNum">-</button>
+        <button
+          class="division-form__btn"
+          :disabled=" beamsNum === 4"
+          @click="beamsNum < 4 ? beamsNum++ : beamsNum"
+        >+</button>
+        <button
+          class="division-form__btn"
+          :disabled=" beamsNum === 0"
+          @click="beamsNum > 0 ? beamsNum-- : beamsNum"
+        >-</button>
       </fieldset>
       <fieldset class="division-form__field">
-        <label for class="division-form__label">Number of posts:</label>
+        <label for class="division-form__label">{{$t("message.numberOfPosts")}}:</label>
         <input type="number" class="division-form__input" v-model="postsNum" />
-        <button class="division-form__btn" @click="postsNum < 4 ? postsNum++ : postsNum">+</button>
-        <button class="division-form__btn" @click="postsNum > 0 ? postsNum-- : postsNum">-</button>
+        <button
+          class="division-form__btn"
+          :disabled=" postsNum === 4"
+          @click="postsNum < 4 ? postsNum++ : postsNum"
+        >+</button>
+        <button
+          class="division-form__btn"
+          :disabled=" postsNum === 0"
+          @click="postsNum > 0 ? postsNum-- : postsNum"
+        >-</button>
       </fieldset>
       <fieldset class="division-form__field">
-        <label for class="division-form__label">Thickness [cm]:</label>
+        <label for class="division-form__label">{{$t("message.thickness")}} [cm]:</label>
         <input type="number" class="division-form__input" v-model="thickness" />
-        <button class="division-form__btn" @click="thickness < 6 ? thickness+=2 : thickness">+</button>
-        <button class="division-form__btn" @click="thickness > 2 ? thickness-=2 : thickness">-</button>
+        <button
+          class="division-form__btn"
+          :disabled=" thickness === 6"
+          @click="thickness < 6 ? thickness+=2 : thickness"
+        >+</button>
+        <button
+          class="division-form__btn"
+          :disabled=" thickness === 2"
+          @click="thickness > 2 ? thickness-=2 : thickness"
+        >-</button>
       </fieldset>
     </form>
   </div>
@@ -105,9 +129,15 @@ input[type="number"]::-webkit-outer-spin-button {
   border: none;
   margin-left: 4px;
   cursor: pointer;
+  transition: opacity 0.1s;
 }
 
 .division-form__label {
   float: left;
+}
+
+.division-form__btn:disabled {
+  opacity: 0.6;
+  cursor: default;
 }
 </style>
