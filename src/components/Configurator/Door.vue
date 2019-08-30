@@ -129,6 +129,8 @@ export default {
   margin-right: 1px;
   max-height: 300px;
   max-width: 160px;
+  min-width: 100px;
+  min-height: 220px;
 }
 
 .door-beam-wrapper,

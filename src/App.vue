@@ -13,7 +13,9 @@
       <transition name="error-bar-transition">
         <errorbar v-if="errorBarShow"></errorbar>
       </transition>
-      <router-view />
+      <transition name="view-transition" mode="out-in">
+        <router-view />
+      </transition>
     </div>
   </div>
 </template>
@@ -115,7 +117,7 @@ input[type="radio"] {
 
 @keyframes dropDown {
   0% {
-    transform: translateY(-100%);
+    transform: translateY(-110%);
   }
   100% {
     transform: translateY(0);
@@ -147,11 +149,52 @@ input[type="radio"] {
   animation: fadeIn 0.075s ease-out reverse;
 }
 
+@keyframes fadeInPop {
+  0% {
+    opacity: 0;
+    padding-top: 20px;
+  }
+  100% {
+    opacity: 1;
+    padding-top: 0px;
+  }
+}
+
 .typeInfo-transition-enter-active {
-  animation: fadeIn 0.15s;
+  animation: fadeInPop 0.2s;
 }
 
 .typeInfo-transition-leave-active {
-  animation: fadeIn 0.1s reverse;
+  animation: fadeInPop 0.2s reverse;
+}
+
+.view-transition-enter-active {
+  animation: fadeInPop 0.3s;
+}
+
+.view-transition-leave-active {
+  animation: viewLeave 0.2s;
+}
+
+@keyframes viewEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(100px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes viewLeave {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100px);
+  }
 }
 </style>

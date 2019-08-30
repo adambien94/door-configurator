@@ -4,19 +4,18 @@
     <div class="configurator-container">
       <demo-window></demo-window>
       <div class="configurations">
-        <div id="step-1" v-if="configStep === 1">
-          <door-type></door-type>
-          <door-size></door-size>
-        </div>
+        <transition name="test-transition" mode="out-in">
+          <div v-if="configStep === 1">
+            <door-type></door-type>
+            <door-size></door-size>
+          </div>
+          <door-division v-if="configStep === 2"></door-division>
+          <door-color v-if="configStep === 3"></door-color>
+        </transition>
+        <transition name="test-transition">
+          <button class="configurations__share" v-if="configStep === 3">share</button>
+        </transition>
 
-        <div id="step-2" v-if="configStep === 2">
-          <door-division></door-division>
-        </div>
-        <div id="step-3" v-if="configStep === 3">
-          <door-color></door-color>
-        </div>
-
-        <button class="configurations__share" v-if="configStep === 3">share</button>
         <nav class="configurations__nav">
           <button
             class="configurations__nav__btn configurations__nav__btn--back"
@@ -55,14 +54,6 @@ export default {
     doorColor: DoorColor,
     configNavigator: ConfigNavigator
   },
-  props: {
-    width: {
-      default: 120
-    },
-    height: {
-      default: 250
-    }
-  },
   data() {
     return {};
   },
@@ -72,19 +63,11 @@ export default {
     }
   },
   computed: {
-    doorWidth() {
-      return this.$store.state.door.width;
-    },
-    doorHeight() {
-      return this.$store.state.door.height;
-    },
     configStep() {
       return this.$store.state.configStep;
     }
   },
   created() {
-    this.$store.commit("storeWidth", this.width);
-    this.$store.commit("storeHeight", this.height);
     this.$store.commit("logged", true);
   }
 };
@@ -148,5 +131,24 @@ export default {
 .configurations__nav__btn:disabled {
   opacity: 0.2;
   cursor: default;
+}
+
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.test-transition-enter-active {
+  animation: slideIn 0.2s ease-in-out;
+}
+
+.test-transition-leave-active {
+  animation: none;
 }
 </style>

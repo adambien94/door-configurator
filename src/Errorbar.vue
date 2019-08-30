@@ -33,7 +33,7 @@ export default {
   width: 100%;
   height: 80px;
   background: #f24e33;
-  z-index: 1;
+  z-index: 3;
   top: 0;
 }
 

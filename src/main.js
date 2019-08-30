@@ -13,9 +13,6 @@ Vue.use(VueI18n);
 Vue.use(VueResource);
 Vue.config.productionTip = false;
 
-// Ready translated locale messages
-
-// Create VueI18n instance with options
 const i18n = new VueI18n({
   locale: "en", // set locale
   messages: translation // set locale messages

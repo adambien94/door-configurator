@@ -6,6 +6,7 @@ import Configurator from "@/components/Configurator.vue";
 Vue.use(Router);
 
 export default new Router({
+  mode: "history",
   routes: [
     {
       path: "/",
@@ -16,12 +17,12 @@ export default new Router({
       path: "/configurator/",
       name: "configurator",
       component: Configurator
-    },
-    {
-      path: "/configurator/:width/:height",
-      name: "configurator",
-      props: true,
-      component: Configurator
     }
+    // {
+    //   path: "/configurator/:width/:height",
+    //   name: "configurator",
+    //   props: true,
+    //   component: Configurator
+    // }
   ]
 });

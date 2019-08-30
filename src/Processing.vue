@@ -30,7 +30,7 @@ export default {
           this.$store.commit("processing", false);
           // this.processFinish();
         }
-      }, 100);
+      }, 125);
     }
     // processFinish() {
     //   location.replace(this.configuratorPath);

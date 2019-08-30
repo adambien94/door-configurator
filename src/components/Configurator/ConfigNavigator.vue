@@ -85,7 +85,7 @@ export default {
   height: 46px;
   border-radius: 50%;
   background: #cddbe5;
-  transition: 0.2s;
+  transition: 0.175s;
 }
 
 .steps__option:after {

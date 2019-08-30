@@ -27,10 +27,9 @@ export default {
   background: #fff;
   position: absolute;
   top: calc(100% + 32px);
-  right: 10px;
-  z-index: 222;
+  right: 65px;
+  z-index: 5;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
-  pointer-events: none;
 }
 
 .organization:before {

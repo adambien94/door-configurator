@@ -1,11 +1,11 @@
 <template>
   <div id="type-info" class="info-container">
     <div class="info">
-      <h1 class="info__heading">{{ $t("message.hello") }}</h1>
+      <h1 class="info__heading">{{ $t("message.doorType") }}</h1>
       <div @click="closeInfoWindow" class="info__close"></div>
       <div class="info__box-wrapper">
         <div class="info__type-box" v-for="val in types">
-          <span class="info__type-box__type">{{ val }}</span>
+          <span class="info__type-box__type">{{ $t("message." + val) }}</span>
           <div class="info__type-box__illustration"></div>
         </div>
       </div>
@@ -18,7 +18,7 @@ export default {
   name: "type-info",
   data() {
     return {
-      types: ["Single", "Double", "Triple"]
+      types: ["singleDoor", "doubleDoor", "tripleDoor"]
     };
   },
   methods: {

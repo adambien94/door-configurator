@@ -1,7 +1,7 @@
 <template>
   <div id="door-division">
     <span class="configurator-heading">{{$t("message.doorDivision")}}</span>
-    <form action class="division-form">
+    <form v-on:submit.prevent class="division-form">
       <fieldset class="division-form__field">
         <label for class="division-form__label">{{$t("message.numberOfBeams")}}:</label>
         <input type="number" class="division-form__input" v-model="beamsNum" />

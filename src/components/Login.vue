@@ -60,11 +60,10 @@ export default {
     },
     validSucced() {
       this.$store.commit("errorBar", false);
-      // this.$store.commit("logged", true);
-      location.replace(window.location.href + this.configuratorPath);
+      this.$router.push(this.configuratorPath);
     },
     validError() {
-      this.$store.commit("errorMsg", "Invalid email or password...");
+      this.$store.commit("errorMsg", this.$t("message.loginError"));
       this.$store.commit("errorBar", true);
     }
   },

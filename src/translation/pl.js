@@ -30,7 +30,7 @@ export default {
     address: "Adres",
     city: "Miejscowość",
     postalCode: "Kod pocztowy",
-    loginError: "Niepoprawny email lub hasło",
+    loginError: "Niepoprawny email lub hasło ( próbuj dalej ) 😀",
     link: "Link",
     copiedToClipboard: "skopiowany do schowka",
     selectLanguage: "Wybierz język"
