@@ -13,6 +13,7 @@ export const store = new Vuex.Store({
     token: "",
     typeInfoShow: false,
     configStep: 1,
+    demoMode: 1,
     door: {
       width: 120,
       height: 250,
@@ -68,6 +69,9 @@ export const store = new Vuex.Store({
     },
     configStepChange: (state, val) => {
       state.configStep += val;
+    },
+    storeDemoMode: (state, num) => {
+      state.demoMode = num;
     }
     // storeHeight: (state, height) => {
     //   state.width = height;

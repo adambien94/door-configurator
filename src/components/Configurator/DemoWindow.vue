@@ -1,7 +1,8 @@
 <template>
   <div id="demoWindow">
     <div class="window">
-      <door></door>
+      <door-3d v-if="(mode === 0)"></door-3d>
+      <door v-if="(mode === 1)"></door>
       <demo-mode></demo-mode>
     </div>
   </div>
@@ -9,16 +10,24 @@
 
 <script>
 import Door from "./Door.vue";
+import Door3d from "./Door3d.vue";
 import DemoMode from "./DemoMode.vue";
+import { PointsMaterial } from "three";
 
 export default {
   name: "demoWindow",
   components: {
     door: Door,
+    door3d: Door3d,
     demoMode: DemoMode
   },
   data() {
     return {};
+  },
+  computed: {
+    mode() {
+      return this.$store.state.demoMode;
+    }
   }
 };
 </script>

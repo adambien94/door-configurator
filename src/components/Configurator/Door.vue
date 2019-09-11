@@ -45,8 +45,8 @@ export default {
       }
     },
     setColor() {
-      let root = document.documentElement;
-      root.style.setProperty("--doorCol", this.doorColor);
+      let rootDoc = document.documentElement;
+      rootDoc.style.setProperty("--doorCol", this.doorColor);
     },
     setThickness() {
       const beams = document.querySelectorAll(".door-beam");

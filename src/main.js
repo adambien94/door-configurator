@@ -6,8 +6,8 @@ import router from "./router";
 import { store } from "./store/store";
 import VueResource from "vue-resource";
 import VueI18n from "vue-i18n";
-
 import translation from "./translation";
+// import VueThreejs from "vue-threejs";
 
 Vue.use(VueI18n);
 Vue.use(VueResource);

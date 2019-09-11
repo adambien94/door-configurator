@@ -8,6 +8,7 @@
         :id="'mode' + index"
         :value="mode"
         v-model="demoMode"
+        @click="switchMode(index)"
       />
       <label :for="'mode' + index" class="mode__radio">{{mode}}</label>
     </div>
@@ -22,6 +23,12 @@ export default {
       modes: ["3D", "2D"],
       demoMode: "2D"
     };
+  },
+  methods: {
+    switchMode(mode) {
+      this.$store.commit("storeDemoMode", mode);
+      console.log(this.$store.state.demoMode);
+    }
   }
 };
 </script>
