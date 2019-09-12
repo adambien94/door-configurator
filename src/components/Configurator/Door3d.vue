@@ -83,7 +83,7 @@ export default {
       this.ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
       this.scene.add(this.ambientLight);
 
-      this.light = new THREE.PointLight(0xffffff, 0.6, 100);
+      this.light = new THREE.PointLight(0xffffff, 0.6, 90);
       this.light.position.set(-3, 7, -5);
       this.light.castShadow = true;
       this.light.shadow.camera.near = 0.1;
@@ -180,12 +180,12 @@ export default {
       this.meshWall.castShadow = true;
       this.scene.add(this.meshWall);
 
-      // let textureLoader = new THREE.TextureLoader();
-      // let backgroundA = new textureLoader.load("../../assets/ino.svg");
+      // let texture = new THREE.TextureLoader().load("../../assets/view.png");
 
       this.meshBackground = new THREE.Mesh(
         new THREE.PlaneGeometry(400, 400),
         new THREE.MeshPhongMaterial({
+          // map: texture
           color: 0x97daed,
           wireframe: false
         })
@@ -197,7 +197,7 @@ export default {
       this.meshWallBack = new THREE.Mesh(
         new THREE.PlaneGeometry(20, 10),
         new THREE.MeshPhongMaterial({
-          color: 0xf1a208,
+          color: 0xe8e0c9,
           wireframe: false
         })
       );
@@ -283,8 +283,11 @@ export default {
         // W
         this.camera.position.x -=
           Math.sin(this.camera.rotation.y) * this.player.speed;
+
         this.camera.position.z -=
           -Math.cos(this.camera.rotation.y) * this.player.speed;
+
+        this.moveLimit();
       }
 
       if (this.keyboard[83]) {
@@ -293,6 +296,7 @@ export default {
           Math.sin(this.camera.rotation.y) * this.player.speed;
         this.camera.position.z +=
           -Math.cos(this.camera.rotation.y) * this.player.speed;
+        this.moveLimit();
       }
 
       if (this.keyboard[65]) {
@@ -301,6 +305,7 @@ export default {
           Math.sin(this.camera.rotation.y + Math.PI / 2) * this.player.speed;
         this.camera.position.z +=
           -Math.cos(this.camera.rotation.y + Math.PI / 2) * this.player.speed;
+        this.moveLimit();
       }
 
       if (this.keyboard[68]) {
@@ -309,6 +314,7 @@ export default {
           Math.sin(this.camera.rotation.y - Math.PI / 2) * this.player.speed;
         this.camera.position.z +=
           -Math.cos(this.camera.rotation.y - Math.PI / 2) * this.player.speed;
+        this.moveLimit();
       }
 
       if (this.keyboard[37]) {
@@ -316,6 +322,19 @@ export default {
       }
       if (this.keyboard[39]) {
         this.camera.rotation.y += this.player.turnSpeed;
+        this.moveLimit();
+      }
+    },
+    moveLimit() {
+      if (this.camera.position.x > 8) {
+        this.camera.position.x = 8;
+      } else if (this.camera.position.x < -8) {
+        this.camera.position.x = -8;
+      }
+      if (this.camera.position.z > 4) {
+        this.camera.position.z = 4;
+      } else if (this.camera.position.z < -11) {
+        this.camera.position.z = -11;
       }
     },
     drawDoor() {
