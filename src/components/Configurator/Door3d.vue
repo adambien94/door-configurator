@@ -23,11 +23,15 @@ export default {
       renderer: null,
       meshFloor: null,
       meshWall: null,
+      meshBackground: null,
+      meshWallFrontRight: null,
+      meshWallFrontLeft: null,
       meshSilling: null,
       meshWallLeft: null,
       meshWallRight: null,
       ambientLight: null,
       light: null,
+      lightOutside: null,
       keyboard: {},
       canvasWindow: null,
       doorNum: null,
@@ -42,7 +46,7 @@ export default {
     };
   },
   methods: {
-    test() {
+    setCanvas() {
       this.canvasWindow = document.getElementById("canvas-window");
 
       this.winWidth = this.canvasWindow.getBoundingClientRect().width;
@@ -56,6 +60,7 @@ export default {
       });
 
       this.init();
+      this.drawWalls();
     },
     keyDown(event) {
       this.keyboard[event.keyCode] = true;
@@ -72,6 +77,37 @@ export default {
         1000
       );
 
+      this.camera.position.set(0, this.player.height, -4);
+      this.camera.lookAt(new THREE.Vector3(0, this.player.height, 0));
+
+      this.ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+      this.scene.add(this.ambientLight);
+
+      this.light = new THREE.PointLight(0xffffff, 0.6, 100);
+      this.light.position.set(-3, 7, -5);
+      this.light.castShadow = true;
+      this.light.shadow.camera.near = 0.1;
+      this.light.shadow.camera.far = 25;
+      this.scene.add(this.light);
+
+      this.lightOutside = new THREE.PointLight(0xffffff, 0.4, 100);
+      this.lightOutside.position.set(-3, 20, 11);
+      this.lightOutside.castShadow = true;
+      this.lightOutside.shadow.camera.near = 0.1;
+      this.lightOutside.shadow.camera.far = 25;
+      this.scene.add(this.lightOutside);
+
+      this.renderer = new THREE.WebGLRenderer();
+      this.renderer.setSize(this.winWidth, this.winHeight);
+
+      this.renderer.shadowMap.enabled = true;
+      this.renderer.shadowMap.type = THREE.BasicShadowMap;
+
+      this.canvasWindow.appendChild(this.renderer.domElement);
+
+      this.animate();
+    },
+    drawWalls() {
       this.meshFloor = new THREE.Mesh(
         new THREE.PlaneGeometry(20, 20, 10, 10),
         new THREE.MeshPhongMaterial({
@@ -93,7 +129,43 @@ export default {
       this.meshSilling.position.z = -5;
       this.meshSilling.rotation.x += Math.PI / 2;
       this.meshSilling.receiveShadow = true;
+      this.meshSilling.castShadow = true;
+
       this.scene.add(this.meshSilling);
+
+      this.meshWallFrontRight = new THREE.Mesh(
+        new THREE.PlaneGeometry(20, 10),
+        new THREE.MeshPhongMaterial({
+          color: 0xe8e0c9,
+          wireframe: false
+        })
+      );
+      this.meshWallFrontRight.position.set(
+        -10 - ((this.doorWidth + this.doorDepth / 2) * this.doorNum) / 2 + 0.05,
+        5,
+        5
+      );
+      this.meshWallFrontRight.rotation.x -= Math.PI;
+      this.meshWallFrontRight.receiveShadow = true;
+      this.meshWallFrontRight.castShadow = true;
+      this.scene.add(this.meshWallFrontRight);
+
+      this.meshWallFrontLeft = new THREE.Mesh(
+        new THREE.PlaneGeometry(20, 10),
+        new THREE.MeshPhongMaterial({
+          color: 0xe8e0c9,
+          wireframe: false
+        })
+      );
+      this.meshWallFrontLeft.position.set(
+        10 + ((this.doorWidth + this.doorDepth) * this.doorNum) / 2,
+        5,
+        5
+      );
+      this.meshWallFrontLeft.rotation.x -= Math.PI;
+      this.meshWallFrontLeft.receiveShadow = true;
+      this.meshWallFrontLeft.castShadow = true;
+      this.scene.add(this.meshWallFrontLeft);
 
       this.meshWall = new THREE.Mesh(
         new THREE.PlaneGeometry(20, 10),
@@ -102,16 +174,30 @@ export default {
           wireframe: false
         })
       );
-      this.meshWall.position.set(0, 5, 5);
+      this.meshWall.position.set(0, this.doorHeight + 5, 5);
       this.meshWall.rotation.x -= Math.PI;
       this.meshWall.receiveShadow = true;
       this.meshWall.castShadow = true;
       this.scene.add(this.meshWall);
 
+      // let textureLoader = new THREE.TextureLoader();
+      // let backgroundA = new textureLoader.load("../../assets/ino.svg");
+
+      this.meshBackground = new THREE.Mesh(
+        new THREE.PlaneGeometry(400, 400),
+        new THREE.MeshPhongMaterial({
+          color: 0x97daed,
+          wireframe: false
+        })
+      );
+      this.meshBackground.position.set(0, 0, 35);
+      this.meshBackground.rotation.x -= Math.PI;
+      this.scene.add(this.meshBackground);
+
       this.meshWallBack = new THREE.Mesh(
         new THREE.PlaneGeometry(20, 10),
         new THREE.MeshPhongMaterial({
-          color: 0xe8e0c9,
+          color: 0xf1a208,
           wireframe: false
         })
       );
@@ -146,29 +232,6 @@ export default {
       this.meshWallRight.receiveShadow = true;
       this.meshWallRight.castShadow = true;
       this.scene.add(this.meshWallRight);
-
-      this.camera.position.set(0, this.player.height, -4);
-      this.camera.lookAt(new THREE.Vector3(0, this.player.height, 0));
-
-      this.ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-      this.scene.add(this.ambientLight);
-
-      this.light = new THREE.PointLight(0xffffff, 0.6, 100);
-      this.light.position.set(-3, 7, -5);
-      this.light.castShadow = true;
-      this.light.shadow.camera.near = 0.1;
-      this.light.shadow.camera.far = 25;
-      this.scene.add(this.light);
-
-      this.renderer = new THREE.WebGLRenderer();
-      this.renderer.setSize(this.winWidth, this.winHeight);
-
-      this.renderer.shadowMap.enabled = true;
-      this.renderer.shadowMap.type = THREE.BasicShadowMap;
-
-      this.canvasWindow.appendChild(this.renderer.domElement);
-
-      this.animate();
     },
     clearDoorMesh() {
       for (let i = 0; i < this.doorNum; i++) {
@@ -184,22 +247,33 @@ export default {
           this.scene.remove(this.doors[i].horizontalObj[key]);
         }
 
-        for (let item of this.doors[i].beams) {
-          item.geometry.dispose();
-          item.material.dispose();
-          this.scene.remove(item);
+        for (let key of this.doors[i].beams) {
+          key.geometry.dispose();
+          key.material.dispose();
+          this.scene.remove(key);
         }
 
-        for (let item of this.doors[i].posts) {
-          item.geometry.dispose();
-          item.material.dispose();
-          this.scene.remove(item);
+        for (let key of this.doors[i].posts) {
+          key.geometry.dispose();
+          key.material.dispose();
+          this.scene.remove(key);
         }
 
         this.doors[i].doorBackground.geometry.dispose();
         this.doors[i].doorBackground.material.dispose();
         this.scene.remove(this.doors[i].doorBackground);
       }
+    },
+    clearWallsMesh() {
+      this.meshWallFrontRight.geometry.dispose();
+      this.meshWallFrontRight.material.dispose();
+      this.scene.remove(this.meshWallFrontRight);
+      this.meshWallFrontLeft.geometry.dispose();
+      this.meshWallFrontLeft.material.dispose();
+      this.scene.remove(this.meshWallFrontLeft);
+      this.meshWall.geometry.dispose();
+      this.meshWall.material.dispose();
+      this.scene.remove(this.meshWall);
     },
     animate() {
       requestAnimationFrame(this.animate);
@@ -253,8 +327,9 @@ export default {
       this.beamsNum = this.door.beams;
       this.postNum = this.door.posts;
       this.doorNum = this.door.type;
-      this.doorPosX = (this.doorWidth / 2) * this.doorNum;
-      // this.doorPosX = 0;
+      this.doorPosX =
+        (this.doorWidth / 2) * this.doorNum +
+        (this.doorDepth / 2) * this.doorNum;
       this.doorColor = this.door.color;
       this.doorDivDepth = this.door.divThickness * this.scale;
 
@@ -368,7 +443,7 @@ export default {
           doorBeam.position.set(
             this.doorPosX - this.doorWidth / 2,
             0.1 + (j + 1) * (this.doorHeight / (this.beamsNum + 1)),
-            5 - 0.1
+            5 - 0.075
           );
           doorBeam.receiveShadow = true;
           doorBeam.castShadow = true;
@@ -391,7 +466,7 @@ export default {
           doorPost.position.set(
             this.doorPosX - (j + 1) * (this.doorWidth / (this.postNum + 1)),
             this.doorHeight / 2 + 0.1,
-            5 - 0.1
+            5 - 0.075
           );
           doorPost.receiveShadow = true;
           doorPost.castShadow = true;
@@ -403,7 +478,9 @@ export default {
           new THREE.PlaneGeometry(this.doorWidth, this.doorHeight),
           new THREE.MeshPhongMaterial({
             color: 0xb5d7ff,
-            wireframe: false
+            wireframe: false,
+            transparent: true,
+            opacity: 0.35
           })
         );
         this.doors[i].doorBackground.position.set(
@@ -414,14 +491,16 @@ export default {
         this.doors[i].doorBackground.rotation.x -= Math.PI;
         this.doors[i].doorBackground.rotation.z -= Math.PI;
         this.doors[i].doorBackground.receiveShadow = true;
-        this.doors[i].doorBackground.castShadow = true;
+        // this.doors[i].doorBackground.castShadow = true;
         this.scene.add(this.doors[i].doorBackground);
         this.doorPosX -= this.doorWidth + this.doorDepth + 0.05;
       }
     },
     updateDoor() {
       this.clearDoorMesh();
+      this.clearWallsMesh();
       this.drawDoor();
+      this.drawWalls();
     }
   },
   computed: {
@@ -473,8 +552,14 @@ export default {
       this.updateDoor();
     }
   },
+  created() {
+    this.doorWidth = this.door.width * this.scale;
+    this.doorHeight = this.door.height * this.scale;
+    this.doorDepth = 6 * this.scale;
+    this.doorNum = this.door.type;
+  },
   mounted() {
-    this.test();
+    this.setCanvas();
     this.drawDoor();
   }
 };
