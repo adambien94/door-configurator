@@ -14,6 +14,7 @@ export const store = new Vuex.Store({
     typeInfoShow: false,
     configStep: 1,
     demoMode: 1,
+    customColor: null,
     door: {
       width: 120,
       height: 250,
@@ -72,6 +73,9 @@ export const store = new Vuex.Store({
     },
     storeDemoMode: (state, num) => {
       state.demoMode = num;
+    },
+    storeCustomColor: (state, col) => {
+      state.customColor = col;
     }
     // storeHeight: (state, height) => {
     //   state.width = height;

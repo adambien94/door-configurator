@@ -5,12 +5,15 @@
       <demo-window></demo-window>
       <div class="configurations">
         <transition name="test-transition" mode="out-in">
-          <div v-if="configStep === 1">
+          <div class="step-wrapper" v-if="configStep === 1">
             <door-type></door-type>
             <door-size></door-size>
           </div>
           <door-division v-if="configStep === 2"></door-division>
-          <door-color v-if="configStep === 3"></door-color>
+          <div class="step-wrapper" v-if="configStep === 3">
+            <door-color></door-color>
+            <color-picker></color-picker>
+          </div>
         </transition>
         <transition name="test-transition">
           <button class="configurations__share" v-if="configStep === 3">share</button>
@@ -43,6 +46,7 @@ import DoorSize from "./Configurator/DoorSize.vue";
 import DoorDivision from "./Configurator/DoorDivision.vue";
 import DoorColor from "./Configurator/DoorColor.vue";
 import TypeInfo from "./Configurator/TypeInfo.vue";
+import ColorPicker from "./Configurator/ColorPicker.vue";
 
 export default {
   name: "configurator",
@@ -52,7 +56,8 @@ export default {
     doorSize: DoorSize,
     doorDivision: DoorDivision,
     doorColor: DoorColor,
-    configNavigator: ConfigNavigator
+    configNavigator: ConfigNavigator,
+    colorPicker: ColorPicker
   },
   data() {
     return {};

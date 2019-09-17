@@ -42,7 +42,8 @@ export default {
     blue: "błękit",
     green: "zieleń",
     gold: "złoto",
-    coral: "łosoś"
+    coral: "łosoś",
+    custom: "własny"
   },
   languages: {
     pl: "Polski",

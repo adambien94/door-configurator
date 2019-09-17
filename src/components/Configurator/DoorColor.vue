@@ -33,7 +33,8 @@ export default {
         blue: "#6991B2",
         green: "seagreen",
         gold: "gold",
-        coral: "coral"
+        coral: "coral",
+        custom: "blue"
       },
       myCol: null
     };
@@ -41,15 +42,26 @@ export default {
   methods: {
     storeColor(col) {
       this.$store.commit("storeColor", col);
+    },
+    setCustomColor() {
+      this.colors.custom = this.customColor;
     }
   },
   computed: {
     doorColor() {
       return this.$store.state.door.color;
+    },
+    customColor() {
+      return this.$store.state.customColor;
     }
   },
   created() {
     this.myCol = this.doorColor;
+  },
+  watch: {
+    customColor() {
+      this.setCustomColor();
+    }
   }
 };
 </script>

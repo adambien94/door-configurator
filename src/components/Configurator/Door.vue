@@ -160,9 +160,9 @@ export default {
 
 .vertical-dim-wrapper {
   position: absolute;
-  top: -3px;
+  top: -6px;
   left: -36px;
-  height: calc(100% + 6px);
+  height: calc(100% + 12px);
 }
 
 .top-dim,
@@ -218,7 +218,7 @@ export default {
 
 .bottom-dim-wrapper {
   position: absolute;
-  width: calc(100% + 6px);
+  width: calc(100% + 12px);
 }
 
 .top-dim-wrapper {
@@ -228,7 +228,7 @@ export default {
 
 .bottom-dim-wrapper {
   bottom: -30px;
-  left: -3px;
+  left: -6px;
 }
 
 .top-dim-wrapper {

@@ -19,7 +19,7 @@ export default {
       winWidth: null,
       scene: null,
       camera: null,
-      player: { height: 3.8, speed: 0.1, turnSpeed: Math.PI * 0.01 },
+      player: { height: 3.9, speed: 0.1, turnSpeed: Math.PI * 0.01 },
       renderer: null,
       meshFloor: null,
       meshWall: null,
@@ -77,7 +77,7 @@ export default {
         1000
       );
 
-      this.camera.position.set(0, this.player.height, -4);
+      this.camera.position.set(0, this.player.height, -3.55);
       this.camera.lookAt(new THREE.Vector3(0, this.player.height, 0));
 
       this.ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
@@ -111,7 +111,7 @@ export default {
       this.meshFloor = new THREE.Mesh(
         new THREE.PlaneGeometry(20, 20, 10, 10),
         new THREE.MeshPhongMaterial({
-          color: 0xc18a62
+          color: 0xcc9f5d
         })
       );
       this.meshFloor.rotation.x -= Math.PI / 2;
@@ -122,7 +122,7 @@ export default {
       this.meshSilling = new THREE.Mesh(
         new THREE.PlaneGeometry(20, 20, 10, 10),
         new THREE.MeshPhongMaterial({
-          color: 0xe8e5dc
+          color: 0xeeeeee
         })
       );
       this.meshSilling.position.y = 10;
@@ -136,7 +136,7 @@ export default {
       this.meshWallFrontRight = new THREE.Mesh(
         new THREE.PlaneGeometry(20, 10),
         new THREE.MeshPhongMaterial({
-          color: 0xe8e0c9,
+          color: 0xeeeeee,
           wireframe: false
         })
       );
@@ -153,7 +153,7 @@ export default {
       this.meshWallFrontLeft = new THREE.Mesh(
         new THREE.PlaneGeometry(20, 10),
         new THREE.MeshPhongMaterial({
-          color: 0xe8e0c9,
+          color: 0xeeeeee,
           wireframe: false
         })
       );
@@ -170,7 +170,7 @@ export default {
       this.meshWall = new THREE.Mesh(
         new THREE.PlaneGeometry(20, 10),
         new THREE.MeshPhongMaterial({
-          color: 0xe8e0c9,
+          color: 0xeeeeee,
           wireframe: false
         })
       );
@@ -186,7 +186,7 @@ export default {
         new THREE.PlaneGeometry(400, 400),
         new THREE.MeshPhongMaterial({
           // map: texture
-          color: 0x97daed,
+          color: 0xafdfed,
           wireframe: false
         })
       );
@@ -197,7 +197,7 @@ export default {
       this.meshWallBack = new THREE.Mesh(
         new THREE.PlaneGeometry(20, 10),
         new THREE.MeshPhongMaterial({
-          color: 0xe8e0c9,
+          color: 0xeeeeee,
           wireframe: false
         })
       );
@@ -210,7 +210,7 @@ export default {
       this.meshWallLeft = new THREE.Mesh(
         new THREE.PlaneGeometry(20, 10),
         new THREE.MeshPhongMaterial({
-          color: 0xe8e0c9,
+          color: 0xeeeeee,
           wireframe: false
         })
       );
@@ -223,7 +223,7 @@ export default {
       this.meshWallRight = new THREE.Mesh(
         new THREE.PlaneGeometry(20, 10),
         new THREE.MeshPhongMaterial({
-          color: 0xe8e0c9,
+          color: 0xeeeeee,
           wireframe: false
         })
       );
@@ -512,7 +512,7 @@ export default {
         this.doors[i].doorBackground.receiveShadow = true;
         // this.doors[i].doorBackground.castShadow = true;
         this.scene.add(this.doors[i].doorBackground);
-        this.doorPosX -= this.doorWidth + this.doorDepth + 0.05;
+        this.doorPosX -= this.doorWidth + this.doorDepth + 0.025;
       }
     },
     updateDoor() {
@@ -599,7 +599,7 @@ export default {
   top: 15px;
   left: 30px;
   color: #444444;
-  /* font-size: 12px; */
+  font-size: 13px;
   font-weight: 500;
 }
 </style>

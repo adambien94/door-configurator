@@ -42,7 +42,8 @@ export default {
     blue: "blue",
     green: "green",
     gold: "gold",
-    coral: "coral"
+    coral: "coral",
+    custom: "custom"
   },
   languages: {
     pl: "Polish",
