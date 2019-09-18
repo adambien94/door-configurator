@@ -15,6 +15,10 @@ export const store = new Vuex.Store({
     configStep: 1,
     demoMode: 1,
     customColor: null,
+    pickerPos: {
+      x: 55,
+      y: 20
+    },
     door: {
       width: 120,
       height: 250,
@@ -76,6 +80,10 @@ export const store = new Vuex.Store({
     },
     storeCustomColor: (state, col) => {
       state.customColor = col;
+    },
+    storePickerPos: (state, newPos) => {
+      state.pickerPos.x = newPos.x;
+      state.pickerPos.y = newPos.y;
     }
     // storeHeight: (state, height) => {
     //   state.width = height;

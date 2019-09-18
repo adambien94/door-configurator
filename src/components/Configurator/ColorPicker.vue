@@ -1,6 +1,6 @@
 <template>
   <div class="color-picker">
-    <canvas ref="canvas" class="canvas" width="200" height="100"></canvas>
+    <canvas ref="canvas" class="canvas" width="100" height="100"></canvas>
   </div>
 </template>
 
@@ -15,8 +15,8 @@ export default {
       mousePressed: false,
       canvasOffsetX: null,
       canvasOffsetY: null,
-      pickerX: 20,
-      pickerY: 20,
+      pickerX: null,
+      pickerY: null,
       pickerRadius: 5,
       img: null,
       imageData: null,
@@ -27,6 +27,15 @@ export default {
     draw(x, y) {
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
       this.drawImg();
+      this.ctx.strokeStyle =
+        "rgb(" +
+        2 * this.pickerY +
+        ", " +
+        2 * this.pickerY +
+        ", " +
+        2 * this.pickerY +
+        ")";
+      this.ctx.lineWidth = 2;
       this.ctx.beginPath();
       this.ctx.arc(x - 2, y - 2, this.pickerRadius, 0, 2 * Math.PI);
       this.ctx.stroke();
@@ -36,6 +45,11 @@ export default {
       this.canvasOffsetY = this.canvas.getBoundingClientRect().top;
       this.pickerX = e.clientX - this.canvasOffsetX;
       this.pickerY = e.clientY - this.canvasOffsetY;
+      let newPickerPos = {
+        x: this.pickerX,
+        y: this.pickerY
+      };
+      this.$store.commit("storePickerPos", newPickerPos);
     },
     drawImg() {
       let path = require("../.././assets/palette.png");
@@ -54,9 +68,14 @@ export default {
   mounted() {
     this.canvas = this.$refs.canvas;
     this.ctx = this.canvas.getContext("2d");
-    this.drawImg();
+
+    this.pickerX = this.pickerPos.x;
+    this.pickerY = this.pickerPos.y;
+
+    // this.drawImg();
     // OCCOOCOCOSAODOSAODOSAODOSAODOSA ??????? nie rysuje sie odrazu
     this.draw(this.pickerX, this.pickerY);
+    this.getColor(this.pickerX, this.pickerY);
 
     this.canvas.addEventListener("mouseover", () => {
       this.mouseOver = true;
@@ -86,6 +105,11 @@ export default {
       }
     });
   },
+  computed: {
+    pickerPos() {
+      return this.$store.state.pickerPos;
+    }
+  },
   watch: {
     pickedColor() {
       this.$store.commit("storeCustomColor", this.pickedColor);
@@ -96,7 +120,10 @@ export default {
 
 <style scoped>
 .canvas {
-  border: 2px solid gray;
+  border: 1px solid #e6e6e6;
   cursor: default;
+  border-radius: 100px;
+  position: relative;
+  top: -5px;
 }
 </style>

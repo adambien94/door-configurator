@@ -34,7 +34,7 @@ export default {
         green: "seagreen",
         gold: "gold",
         coral: "coral",
-        custom: "blue"
+        custom: null
       },
       myCol: null
     };
@@ -57,10 +57,13 @@ export default {
   },
   created() {
     this.myCol = this.doorColor;
+    this.setCustomColor();
   },
   watch: {
     customColor() {
       this.setCustomColor();
+      this.storeColor(this.customColor);
+      this.myCol = this.customColor;
     }
   }
 };

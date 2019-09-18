@@ -108,10 +108,13 @@ export default {
       this.animate();
     },
     drawWalls() {
+      let path = require("../.././assets/floor.png");
+      let texture = new THREE.TextureLoader().load(path);
       this.meshFloor = new THREE.Mesh(
         new THREE.PlaneGeometry(20, 20, 10, 10),
         new THREE.MeshPhongMaterial({
-          color: 0xcc9f5d
+          color: 0xfce2ba,
+          map: texture
         })
       );
       this.meshFloor.rotation.x -= Math.PI / 2;
@@ -179,8 +182,6 @@ export default {
       this.meshWall.receiveShadow = true;
       this.meshWall.castShadow = true;
       this.scene.add(this.meshWall);
-
-      // let texture = new THREE.TextureLoader().load("../../assets/view.png");
 
       this.meshBackground = new THREE.Mesh(
         new THREE.PlaneGeometry(400, 400),
