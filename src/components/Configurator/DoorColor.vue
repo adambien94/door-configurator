@@ -26,6 +26,7 @@ export default {
     return {
       doorWidth: 0,
       doorHeight: 0,
+      test: false,
       colors: {
         black: "#191919",
         gray: "#5A5858",
@@ -55,16 +56,24 @@ export default {
       return this.$store.state.customColor;
     }
   },
+  watch: {
+    customColor() {
+      if (this.test) {
+        this.setCustomColor();
+        this.storeColor(this.customColor);
+        this.myCol = this.customColor;
+      }
+    },
+    doorColor() {
+      this.myCol = this.doorColor;
+    }
+  },
   created() {
     this.myCol = this.doorColor;
     this.setCustomColor();
   },
-  watch: {
-    customColor() {
-      this.setCustomColor();
-      this.storeColor(this.customColor);
-      this.myCol = this.customColor;
-    }
+  mounted() {
+    this.test = true;
   }
 };
 </script>

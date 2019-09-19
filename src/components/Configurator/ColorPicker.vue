@@ -69,7 +69,6 @@ export default {
     this.pickerY = this.pickerPos.y;
 
     this.draw(this.pickerX, this.pickerY);
-    this.getColor(this.pickerX, this.pickerY);
 
     this.canvas.addEventListener("mouseover", () => {
       this.mouseOver = true;

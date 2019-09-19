@@ -16,7 +16,18 @@
           </div>
         </transition>
         <transition name="test-transition">
-          <button class="configurations__share" v-if="configStep === 3">share</button>
+          <button
+            class="configurations__save"
+            v-if="configStep === 3"
+            @click="saveConfigurations"
+          >save</button>
+        </transition>
+        <transition name="test-transition">
+          <button
+            class="configurations__reset"
+            v-if="configStep === 3"
+            @click="resetConfigurations"
+          >reset</button>
         </transition>
 
         <nav class="configurations__nav">
@@ -60,16 +71,42 @@ export default {
     colorPicker: ColorPicker
   },
   data() {
-    return {};
+    return {
+      saveMsg: "Your configs are saved 👍"
+    };
   },
   methods: {
     step(val) {
       this.$store.commit("configStepChange", val);
+    },
+    saveConfigurations() {
+      localStorage.setItem("myDoor", JSON.stringify(this.door));
+      localStorage.setItem("pickerPos", JSON.stringify(this.pickerPos));
+      let saveInfo = {
+        message: this.saveMsg,
+        type: "saveInfo"
+      };
+      this.$store.commit("setInfo", saveInfo);
+      this.$store.commit("errorBar", true);
+      this.$store.dispatch("closeInfoBar");
+    },
+    resetConfigurations() {
+      localStorage.setItem("myDoor", null);
+      this.$store.commit("resetConfig");
     }
   },
   computed: {
     configStep() {
       return this.$store.state.configStep;
+    },
+    door() {
+      return this.$store.state.door;
+    },
+    defaultConfig() {
+      return this.$store.state.defaultConfig;
+    },
+    pickerPos() {
+      return this.$store.state.pickerPos;
     }
   },
   created() {
@@ -95,12 +132,12 @@ export default {
   position: relative;
 }
 
-.configurations__share {
+.configurations__save,
+.configurations__reset {
   font-size: 8px;
   line-height: 10px;
   text-transform: uppercase;
   padding: 6px 19px;
-  background: #c2cfd8;
   color: #fff;
   font-weight: 600;
   border-radius: 4px;
@@ -108,6 +145,15 @@ export default {
   position: absolute;
   bottom: 59px;
   cursor: pointer;
+}
+
+.configurations__save {
+  background: #c2cfd8;
+}
+
+.configurations__reset {
+  left: 70px;
+  background: #e8c2c4;
 }
 
 .configurations__nav {
@@ -150,7 +196,7 @@ export default {
 }
 
 .test-transition-enter-active {
-  animation: slideIn 0.2s ease-in-out;
+  animation: slideIn 0.2s ease-out;
 }
 
 .test-transition-leave-active {

@@ -6,7 +6,10 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({
   state: {
     errorBarShow: false,
-    error: "",
+    info: {
+      message: "",
+      type: "error"
+    },
     processingShow: false,
     configuratorPath: "configurator",
     loggedIn: false,
@@ -17,11 +20,20 @@ export const store = new Vuex.Store({
     demoMode: 1,
     rememberMe: false || JSON.parse(localStorage.getItem("rememberMe")),
     customColor: null,
-    pickerPos: {
+    pickerPos: JSON.parse(localStorage.getItem("pickerPos")) || {
       x: 50,
       y: 38
     },
-    door: {
+    door: JSON.parse(localStorage.getItem("myDoor")) || {
+      width: 120,
+      height: 250,
+      type: 1,
+      beams: 0,
+      posts: 0,
+      color: "#5A5858",
+      divThickness: 6
+    },
+    defaultConfig: {
       width: 120,
       height: 250,
       type: 1,
@@ -30,8 +42,15 @@ export const store = new Vuex.Store({
       color: "#5A5858",
       divThickness: 6
     }
+    // czemu sie kasuje w resetConfig^^^
   },
-  getters: {},
+  actions: {
+    closeInfoBar: context => {
+      setTimeout(() => {
+        context.commit("errorBar", false);
+      }, 3000);
+    }
+  },
   mutations: {
     errorBar: (state, bool) => {
       state.errorBarShow = bool;
@@ -39,8 +58,11 @@ export const store = new Vuex.Store({
     typeInfo: (state, bool) => {
       state.typeInfoShow = bool;
     },
-    errorMsg: (state, msg) => {
-      state.error = msg;
+    setInfo: (state, information) => {
+      state.info = {
+        message: information.message,
+        type: information.type
+      };
     },
     processing: (state, bool) => {
       state.processingShow = bool;
@@ -88,6 +110,17 @@ export const store = new Vuex.Store({
     storePickerPos: (state, newPos) => {
       state.pickerPos.x = newPos.x;
       state.pickerPos.y = newPos.y;
+    },
+    resetConfig: state => {
+      state.door = {
+        width: 120,
+        height: 250,
+        type: 1,
+        beams: 0,
+        posts: 0,
+        color: "#5A5858",
+        divThickness: 6
+      };
     }
     // storeHeight: (state, height) => {
     //   state.width = height;

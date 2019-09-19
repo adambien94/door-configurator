@@ -63,8 +63,13 @@ export default {
       this.$router.push(this.configuratorPath);
     },
     validError() {
-      this.$store.commit("errorMsg", this.$t("message.loginError"));
+      let info = {
+        message: this.$t("message.loginError"),
+        type: "error"
+      };
+      this.$store.commit("setInfo", info);
       this.$store.commit("errorBar", true);
+      this.$store.dispatch("closeInfoBar");
     }
   },
   computed: {
