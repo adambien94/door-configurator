@@ -13,9 +13,9 @@
       <transition name="error-bar-transition">
         <errorbar v-if="errorBarShow"></errorbar>
       </transition>
-      <transition name="view-transition" mode="out-in">
-        <router-view />
-      </transition>
+      <!-- <transition name="view-transition" mode="out-in"> -->
+      <router-view />
+      <!-- </transition> -->
     </div>
   </div>
 </template>

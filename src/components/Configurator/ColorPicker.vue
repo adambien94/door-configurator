@@ -20,21 +20,17 @@ export default {
       pickerRadius: 5,
       img: null,
       imageData: null,
-      pickedColor: null
+      pickedColor: null,
+      red: null,
+      green: null,
+      blue: null
     };
   },
   methods: {
     draw(x, y) {
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
       this.drawImg();
-      this.ctx.strokeStyle =
-        "rgb(" +
-        2 * this.pickerY +
-        ", " +
-        2 * this.pickerY +
-        ", " +
-        2 * this.pickerY +
-        ")";
+      this.ctx.strokeStyle = "rgb(50,50,50)";
       this.ctx.lineWidth = 2;
       this.ctx.beginPath();
       this.ctx.arc(x - 2, y - 2, this.pickerRadius, 0, 2 * Math.PI);
@@ -59,21 +55,19 @@ export default {
     },
     getColor(x, y) {
       this.imageData = this.ctx.getImageData(x, y, 1, 1);
-      let red = this.imageData.data[0];
-      let green = this.imageData.data[1];
-      let blue = this.imageData.data[2];
-      this.pickedColor = "rgb(" + red + "," + green + "," + blue + ")";
+      this.red = this.imageData.data[0];
+      this.green = this.imageData.data[1];
+      this.blue = this.imageData.data[2];
+      this.pickedColor =
+        "rgb(" + this.red + "," + this.green + "," + this.blue + ")";
     }
   },
   mounted() {
     this.canvas = this.$refs.canvas;
     this.ctx = this.canvas.getContext("2d");
-
     this.pickerX = this.pickerPos.x;
     this.pickerY = this.pickerPos.y;
 
-    // this.drawImg();
-    // OCCOOCOCOSAODOSAODOSAODOSAODOSA ??????? nie rysuje sie odrazu
     this.draw(this.pickerX, this.pickerY);
     this.getColor(this.pickerX, this.pickerY);
 

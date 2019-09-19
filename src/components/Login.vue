@@ -14,7 +14,7 @@
         :placeholder="$t('message.password') "
         v-model="password"
       />
-      <input type="checkbox" id="keep-me" />
+      <input type="checkbox" id="keep-me" v-model="remember" />
       <label for="keep-me" class="log-form__checkbox">{{ $t("message.remember") }}</label>
       <input
         type="submit"
@@ -33,7 +33,8 @@ export default {
     return {
       email: "login@applover.pl",
       password: "password123",
-      serverResponse: ""
+      serverResponse: "",
+      remember: false
     };
   },
   methods: {
@@ -48,7 +49,6 @@ export default {
         .then(data => {
           this.serverResponse = data.body.status;
           this.$store.commit("storeToken", data.body.token);
-          console.log(this.token);
         });
     },
     validation() {
@@ -82,6 +82,9 @@ export default {
     },
     token() {
       return this.$store.state.token;
+    },
+    rememberMe() {
+      return this.$store.state.rememberMe;
     }
   },
   watch: {
@@ -89,10 +92,15 @@ export default {
       if (this.processingShow === false) {
         this.validation();
       }
+    },
+    remember() {
+      localStorage.setItem("rememberMe", JSON.stringify(this.remember));
     }
   },
   created() {
-    this.$store.commit("logged", false);
+    if (this.rememberMe) {
+      this.$router.push(this.configuratorPath);
+    }
   }
 };
 </script>

@@ -10,14 +10,16 @@ export const store = new Vuex.Store({
     processingShow: false,
     configuratorPath: "configurator",
     loggedIn: false,
+    remember: false,
     token: "",
     typeInfoShow: false,
     configStep: 1,
     demoMode: 1,
+    rememberMe: false || JSON.parse(localStorage.getItem("rememberMe")),
     customColor: null,
     pickerPos: {
-      x: 55,
-      y: 20
+      x: 50,
+      y: 38
     },
     door: {
       width: 120,
@@ -29,6 +31,7 @@ export const store = new Vuex.Store({
       divThickness: 6
     }
   },
+  getters: {},
   mutations: {
     errorBar: (state, bool) => {
       state.errorBarShow = bool;
@@ -48,6 +51,7 @@ export const store = new Vuex.Store({
     logged: (state, bool) => {
       state.loggedIn = bool;
     },
+
     storeToken: (state, token) => {
       state.token = token;
     },
