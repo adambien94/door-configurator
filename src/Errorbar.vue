@@ -43,7 +43,7 @@ export default {
 
 <style scoped>
 .bar {
-  position: absolute;
+  position: fixed;
   width: 100%;
   height: 80px;
   /* background: #f24e33; */

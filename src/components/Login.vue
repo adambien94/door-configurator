@@ -69,7 +69,7 @@ export default {
       };
       this.$store.commit("setInfo", info);
       this.$store.commit("errorBar", true);
-      this.$store.dispatch("closeInfoBar");
+      this.$store.dispatch("closeErrorBar", 3000);
     }
   },
   computed: {

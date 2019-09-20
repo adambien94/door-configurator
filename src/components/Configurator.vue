@@ -1,6 +1,9 @@
 <template>
-  <div id="configurator">
+  <div id="configurator" class="configurator">
     <config-navigator></config-navigator>
+    <transition name="config-list-transition">
+      <saved-configs v-if="savedConfigs.length > 0"></saved-configs>
+    </transition>
     <div class="configurator-container">
       <demo-window></demo-window>
       <div class="configurations">
@@ -58,6 +61,7 @@ import DoorDivision from "./Configurator/DoorDivision.vue";
 import DoorColor from "./Configurator/DoorColor.vue";
 import TypeInfo from "./Configurator/TypeInfo.vue";
 import ColorPicker from "./Configurator/ColorPicker.vue";
+import SavedConfigs from "./Configurator/SavedConfigs.vue";
 
 export default {
   name: "configurator",
@@ -68,11 +72,13 @@ export default {
     doorDivision: DoorDivision,
     doorColor: DoorColor,
     configNavigator: ConfigNavigator,
-    colorPicker: ColorPicker
+    colorPicker: ColorPicker,
+    SavedConfigs: SavedConfigs
   },
   data() {
     return {
-      saveMsg: "Your configs are saved 👍"
+      saveMsg: "Your configs are saved 👍",
+      initialSave: true
     };
   },
   methods: {
@@ -87,8 +93,20 @@ export default {
         type: "saveInfo"
       };
       this.$store.commit("setInfo", saveInfo);
+      this.infoBarToggle();
+      this.$store.commit("addConfig", { ...this.door });
+      this.initialSave = false;
+    },
+    addToSavedConfigs() {},
+    infoBarToggle() {
+      let time;
+      if (this.initialSave) {
+        time = 3900;
+      } else {
+        time = 1900;
+      }
       this.$store.commit("errorBar", true);
-      this.$store.dispatch("closeInfoBar");
+      this.$store.dispatch("closeInfoBar", time);
     },
     resetConfigurations() {
       localStorage.setItem("myDoor", null);
@@ -107,6 +125,9 @@ export default {
     },
     pickerPos() {
       return this.$store.state.pickerPos;
+    },
+    savedConfigs() {
+      return this.$store.state.savedConfigs;
     }
   },
   created() {
@@ -116,13 +137,16 @@ export default {
 </script>
 
 <style scoped>
+.configurator {
+  position: relative;
+  padding-bottom: 120px;
+}
 .configurator-container {
   width: 900px;
   margin: 19px auto 0 auto;
   display: flex;
   justify-content: flex-start;
   padding-left: 128px;
-  margin-bottom: 120px;
 }
 
 .configurations {
@@ -148,12 +172,12 @@ export default {
 }
 
 .configurations__save {
-  background: #c2cfd8;
+  background: #6f91aa;
 }
 
 .configurations__reset {
   left: 70px;
-  background: #e8c2c4;
+  background: #e07b87;
 }
 
 .configurations__nav {
@@ -184,10 +208,10 @@ export default {
   cursor: default;
 }
 
-@keyframes slideIn {
+@keyframes appear {
   0% {
     opacity: 0;
-    transform: translateY(3px);
+    transform: translateY(1px);
   }
   100% {
     opacity: 1;
@@ -196,10 +220,30 @@ export default {
 }
 
 .test-transition-enter-active {
-  animation: slideIn 0.2s ease-out;
+  animation: appear 0.225s ease-out;
 }
 
 .test-transition-leave-active {
-  animation: none;
+  animation: appear 0s ease-out reverse;
+}
+
+@keyframes test {
+  0% {
+    transform: translatex(-100%);
+  }
+  70% {
+    transform: translatex(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.config-list-transition-enter-active {
+  animation: test 1.2s ease-in-out;
+}
+
+.config-list-transition-leave-active {
+  animation: 1.2s ease-in-out reverse;
 }
 </style>

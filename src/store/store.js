@@ -41,14 +41,16 @@ export const store = new Vuex.Store({
       posts: 0,
       color: "#5A5858",
       divThickness: 6
-    }
+    },
     // czemu sie kasuje w resetConfig^^^
+
+    savedConfigs: []
   },
   actions: {
-    closeInfoBar: context => {
+    closeInfoBar: (context, time) => {
       setTimeout(() => {
         context.commit("errorBar", false);
-      }, 3000);
+      }, time);
     }
   },
   mutations: {
@@ -121,7 +123,17 @@ export const store = new Vuex.Store({
         color: "#5A5858",
         divThickness: 6
       };
+    },
+    setConfig: (state, config) => {
+      state.door = config;
+    },
+    addConfig: (state, config) => {
+      state.savedConfigs.push(config);
     }
+    // deleteConfig: (state, config) => {
+    //   let index = state.savedConfigs.indexOf(config);
+    //   state.savedConfigs.splice(index, 1);
+    // }
     // storeHeight: (state, height) => {
     //   state.width = height;
     // },

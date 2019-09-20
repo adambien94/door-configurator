@@ -109,9 +109,4 @@ export default {
 .rd:checked + .steps__option:after {
   background: #ffffff;
 }
-
-.test {
-  background: red;
-  border: 3px solid red;
-}
 </style>
