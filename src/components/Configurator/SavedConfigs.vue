@@ -45,7 +45,8 @@
         </li>
       </ul>
     </div>
-    <button class="saved-configs__btn">save my doors</button>
+    <button class="saved-configs__btn saved-configs__btn--primary" @click="saveSession()">save doors</button>
+    <button class="saved-configs__btn saved-configs__btn--danger" @click="clearSession()">clear</button>
   </div>
 </template>
 
@@ -90,13 +91,33 @@ export default {
       let infoColor = this.$refs.infoColor;
       infoColor.style.background = this.savedConfigs[index].color + "";
       info.style.display = "block";
-      info.style.top = configItemOffsetTop - 88 + "px";
+      info.style.top = configItemOffsetTop + pageYOffset - 88 + "px";
       this.infoConfigs = { ...this.savedConfigs[index] };
       this.index = index + 1;
     },
     hideInfo(index) {
       let info = this.$refs.configInfo;
       info.style.display = "none";
+    },
+    saveSession() {
+      localStorage.setItem("myDoor", JSON.stringify(this.door));
+      localStorage.setItem("pickerPos", JSON.stringify(this.pickerPos));
+      localStorage.setItem("savedConfigs", JSON.stringify(this.savedConfigs));
+      let saveSession = {
+        message: "Your session is saved 🤙",
+        type: "info"
+      };
+      this.$store.commit("setInfo", saveSession);
+      this.infoBarToggle();
+    },
+    clearSession() {
+      localStorage.setItem("savedConfigs", JSON.stringify(""));
+      localStorage.setItem("myDoor", JSON.stringify(""));
+      this.$store.commit("clearSavedConfigs");
+    },
+    infoBarToggle() {
+      this.$store.commit("errorBar", true);
+      this.$store.dispatch("closeInfoBar", 1900);
     }
   },
   computed: {
@@ -105,6 +126,12 @@ export default {
     },
     test() {
       return this.$store.state.savedConfigs.length;
+    },
+    door() {
+      return this.$store.state.door;
+    },
+    pickerPos() {
+      return this.$store.state.pickerPos;
     }
   },
   watch: {
@@ -211,6 +238,7 @@ export default {
 .saved-configs__btn {
   display: block;
   margin-left: 10px;
+  margin-bottom: 10px;
   font-size: 8px;
   line-height: 10px;
   text-transform: uppercase;
@@ -220,16 +248,24 @@ export default {
   border-radius: 4px;
   border: none;
   cursor: pointer;
+  width: 100px;
+}
+
+.saved-configs__btn--primary {
   background: #6f91aa;
+}
+
+.saved-configs__btn--danger {
+  background: #e07b87;
 }
 
 .config-info {
   position: absolute;
-  width: 200px;
-  background: #fcfcfc;
+  width: 190px;
+  background: #f9fcff;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
   display: none;
-  left: 88%;
+  left: 160px;
   padding: 20px;
   box-sizing: border-box;
   z-index: 5;
@@ -241,7 +277,7 @@ export default {
   position: absolute;
   width: 25px;
   height: 25px;
-  background: #fcfcfc;
+  background: #f9fcff;
   top: 0;
   left: 0;
   transform: translate(-50%, 5px) rotate(45deg);
@@ -256,11 +292,12 @@ export default {
   height: 40px;
   top: 0;
   left: 0;
-  background: #fcfcfc;
+  background: #f9fcff;
 }
 
 .config-info__name {
   color: #6f91aa;
+  text-decoration: underline;
 }
 
 .config-info__list {
@@ -275,6 +312,8 @@ export default {
 
 .config-info__value {
   color: #6f91aa;
+  padding-left: 2px;
+  font-weight: 500;
 }
 
 .config-info__color {
@@ -286,5 +325,13 @@ export default {
   position: relative;
   top: 3px;
   left: 3px;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+  opacity: 0;
 }
 </style>

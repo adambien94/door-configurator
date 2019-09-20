@@ -20,14 +20,14 @@
         </transition>
         <transition name="test-transition">
           <button
-            class="configurations__save"
+            class="configurations__btn configurations__btn--primary"
             v-if="configStep === 3"
             @click="saveConfigurations"
-          >save</button>
+          >aad</button>
         </transition>
         <transition name="test-transition">
           <button
-            class="configurations__reset"
+            class="configurations__btn configurations__btn--danger"
             v-if="configStep === 3"
             @click="resetConfigurations"
           >reset</button>
@@ -86,8 +86,6 @@ export default {
       this.$store.commit("configStepChange", val);
     },
     saveConfigurations() {
-      localStorage.setItem("myDoor", JSON.stringify(this.door));
-      localStorage.setItem("pickerPos", JSON.stringify(this.pickerPos));
       let saveInfo = {
         message: this.saveMsg,
         type: "saveInfo"
@@ -99,14 +97,8 @@ export default {
     },
     addToSavedConfigs() {},
     infoBarToggle() {
-      let time;
-      if (this.initialSave) {
-        time = 3900;
-      } else {
-        time = 1900;
-      }
       this.$store.commit("errorBar", true);
-      this.$store.dispatch("closeInfoBar", time);
+      this.$store.dispatch("closeInfoBar", 1900);
     },
     resetConfigurations() {
       localStorage.setItem("myDoor", null);
@@ -156,8 +148,7 @@ export default {
   position: relative;
 }
 
-.configurations__save,
-.configurations__reset {
+.configurations__btn {
   font-size: 8px;
   line-height: 10px;
   text-transform: uppercase;
@@ -171,11 +162,11 @@ export default {
   cursor: pointer;
 }
 
-.configurations__save {
+.configurations__btn--primary {
   background: #6f91aa;
 }
 
-.configurations__reset {
+.configurations__btn--danger {
   left: 70px;
   background: #e07b87;
 }
@@ -244,6 +235,6 @@ export default {
 }
 
 .config-list-transition-leave-active {
-  animation: 1.2s ease-in-out reverse;
+  animation: test 1.2s ease-in-out reverse;
 }
 </style>

@@ -44,7 +44,7 @@ export const store = new Vuex.Store({
     },
     // czemu sie kasuje w resetConfig^^^
 
-    savedConfigs: []
+    savedConfigs: JSON.parse(localStorage.getItem("savedConfigs")) || []
   },
   actions: {
     closeInfoBar: (context, time) => {
@@ -129,6 +129,9 @@ export const store = new Vuex.Store({
     },
     addConfig: (state, config) => {
       state.savedConfigs.push(config);
+    },
+    clearSavedConfigs: state => {
+      state.savedConfigs = [];
     }
     // deleteConfig: (state, config) => {
     //   let index = state.savedConfigs.indexOf(config);
