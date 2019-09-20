@@ -98,7 +98,7 @@ export default {
     addToSavedConfigs() {},
     infoBarToggle() {
       this.$store.commit("errorBar", true);
-      this.$store.dispatch("closeInfoBar", 1900);
+      this.$store.dispatch("closeInfoBar", 1600);
     },
     resetConfigurations() {
       localStorage.setItem("myDoor", null);
@@ -222,7 +222,7 @@ export default {
   0% {
     transform: translatex(-100%);
   }
-  70% {
+  40% {
     transform: translatex(-100%);
   }
   100% {
@@ -231,10 +231,10 @@ export default {
 }
 
 .config-list-transition-enter-active {
-  animation: test 1.2s ease-in-out;
+  animation: test 0.8s ease-in-out;
 }
 
 .config-list-transition-leave-active {
-  animation: test 1.2s ease-in-out reverse;
+  animation: test 0.8s ease-in-out reverse;
 }
 </style>

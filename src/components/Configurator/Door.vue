@@ -1,23 +1,23 @@
 <template>
   <div id="door" class="door-wrapper">
-    <div class="top-dim-wrapper">
+    <div class="top-dim-wrapper" v-if="!infoMode">
       <div class="top-dim">
         <div class="top-dim__dim">{{topDim}}</div>
       </div>
     </div>
-    <div class="door-frame" v-for="index in doorType">
+    <div class="door-frame" v-for="index in doorType" ref="doorFrames">
       <div class="door-beam-wrapper">
-        <div class="door-beam" v-for="index in doorBeams"></div>
+        <div class="door-beam" v-for="index in doorBeams" ref="doorBeam"></div>
       </div>
       <div class="door-post-wrapper">
-        <div class="door-post" v-for="index in doorPosts"></div>
+        <div class="door-post" v-for="index in doorPosts" ref="doorPost"></div>
       </div>
-      <div class="vertical-dim-wrapper" v-if="index === 1">
+      <div class="vertical-dim-wrapper" v-if="index === 1 && !infoMode">
         <div class="vertical-dim">
           <div class="vertical-dim__dim">{{doorHeight}}</div>
         </div>
       </div>
-      <div class="bottom-dim-wrapper">
+      <div class="bottom-dim-wrapper" v-if="!infoMode">
         <div class="bottom-dim">
           <div class="bottom-dim__dim">{{doorWidth}}</div>
         </div>
@@ -29,6 +29,9 @@
 <script>
 export default {
   name: "door",
+  props: {
+    infoDemo: Number
+  },
   data() {
     return {
       maxWidth: 160,
@@ -38,52 +41,86 @@ export default {
   },
   methods: {
     updateDimentions() {
-      const frames = document.querySelectorAll(".door-frame");
-      for (let frame of frames) {
+      let doorFrames = this.$refs.doorFrames;
+      for (let frame of doorFrames) {
         frame.style.width = this.doorWidth + "px";
         frame.style.height = this.doorHeight + "px";
       }
     },
     setColor() {
-      let rootDoc = document.documentElement;
-      rootDoc.style.setProperty("--doorCol", this.doorColor);
+      let doorBeam = this.$refs.doorBeam;
+      if (doorBeam) {
+        for (let element of doorBeam) {
+          element.style.background = this.doorColor;
+        }
+      }
+      let doorPost = this.$refs.doorPost;
+      if (doorPost) {
+        for (let element of doorPost) {
+          element.style.background = this.doorColor;
+        }
+      }
+      let doorFrames = this.$refs.doorFrames;
+      for (let frame of doorFrames) {
+        frame.style.borderColor = this.doorColor;
+      }
     },
     setThickness() {
-      const beams = document.querySelectorAll(".door-beam");
-      const posts = document.querySelectorAll(".door-post");
-      for (let beam of beams) {
-        beam.style.height = this.divThickness + "px";
+      let doorBeam = this.$refs.doorBeam;
+      let doorPost = this.$refs.doorPost;
+      if (doorBeam) {
+        for (let beam of doorBeam) {
+          beam.style.height = this.divThickness + "px";
+        }
       }
-      for (let post of posts) {
-        post.style.width = this.divThickness + "px";
+      if (doorPost) {
+        for (let post of doorPost) {
+          post.style.width = this.divThickness + "px";
+        }
       }
     }
   },
   computed: {
+    infoMode() {
+      let infoMode = false;
+      if (this.infoDemo !== undefined && this.infoDemo !== null) {
+        infoMode = true;
+      }
+      return infoMode;
+    },
+    door() {
+      let door = undefined;
+      if (this.infoMode) {
+        door = this.$store.state.savedConfigs[this.infoDemo - 1];
+      } else {
+        door = this.$store.state.door;
+      }
+      return door;
+    },
     doorWidth() {
-      return this.$store.state.door.width;
+      return this.door.width;
     },
     doorHeight() {
-      return this.$store.state.door.height;
+      return this.door.height;
     },
     doorType() {
-      return this.$store.state.door.type;
+      return this.door.type;
     },
     doorBeams() {
-      return this.$store.state.door.beams;
+      return this.door.beams;
     },
     doorPosts() {
-      return this.$store.state.door.posts;
+      return this.door.posts;
     },
     topDim() {
       let dim = this.doorWidth * this.doorType;
       return dim;
     },
     doorColor() {
-      return this.$store.state.door.color;
+      return this.door.color;
     },
     divThickness() {
-      return this.$store.state.door.divThickness;
+      return this.door.divThickness;
     }
   },
   watch: {

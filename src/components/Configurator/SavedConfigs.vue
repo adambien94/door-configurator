@@ -44,6 +44,7 @@
           <span class="config-info__value">{{infoConfigs.divThickness}}</span>
         </li>
       </ul>
+      <door :infoDemo="index"></door>
     </div>
     <button class="saved-configs__btn saved-configs__btn--primary" @click="saveSession()">save doors</button>
     <button class="saved-configs__btn saved-configs__btn--danger" @click="clearSession()">clear</button>
@@ -104,7 +105,7 @@ export default {
       localStorage.setItem("pickerPos", JSON.stringify(this.pickerPos));
       localStorage.setItem("savedConfigs", JSON.stringify(this.savedConfigs));
       let saveSession = {
-        message: "Your session is saved 🤙",
+        message: "Your session is saved.",
         type: "info"
       };
       this.$store.commit("setInfo", saveSession);
@@ -117,7 +118,7 @@ export default {
     },
     infoBarToggle() {
       this.$store.commit("errorBar", true);
-      this.$store.dispatch("closeInfoBar", 1900);
+      this.$store.dispatch("closeInfoBar", 2200);
     }
   },
   computed: {
@@ -140,7 +141,6 @@ export default {
     }
   },
   created() {
-    console.log(this.test);
     this.configs = this.savedConfigs;
   }
 };
@@ -261,7 +261,7 @@ export default {
 
 .config-info {
   position: absolute;
-  width: 190px;
+  min-width: 190px;
   background: #f9fcff;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
   display: none;
