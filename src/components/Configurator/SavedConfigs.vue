@@ -13,8 +13,13 @@
       >Config {{index + 1}}</li>
     </ul>
     <div class="config-info" ref="configInfo">
+      <div class="config-info__pointer" ref="infoPointer"></div>
       <span class="config-info__name">Config {{index}}</span>
       <ul class="config-info__list">
+        <!-- <li v-for="(val, key, index) in infoConfigs" class="config-info__item">
+          {{infoProperties[index]}}:
+          <span class="config-info__value" ref="heh">{{val}}</span>
+        </li>-->
         <li class="config-info__item">
           Width:
           <span class="config-info__value">{{infoConfigs.width}}</span>
@@ -44,9 +49,12 @@
           <span class="config-info__value">{{infoConfigs.divThickness}}</span>
         </li>
       </ul>
-      <door :infoDemo="index"></door>
+      <door :infoDemoIndex="index"></door>
     </div>
-    <button class="saved-configs__btn saved-configs__btn--primary" @click="saveSession()">save doors</button>
+    <button
+      class="saved-configs__btn saved-configs__btn--primary"
+      @click="saveSession()"
+    >save configs</button>
     <button class="saved-configs__btn saved-configs__btn--danger" @click="clearSession()">clear</button>
   </div>
 </template>
@@ -65,38 +73,43 @@ export default {
     return {
       configs: null,
       configsShow: true,
-      infoConfigs: {
-        width: 120,
-        height: 250,
-        type: 1,
-        beams: 0,
-        posts: 0,
-        color: "#5A5858",
-        divThickness: 6
-      },
-      index: null
+      infoConfigs: {},
+      index: null,
+      infoProperties: [
+        "width",
+        "height",
+        "doors num",
+        "beams num",
+        "posts num",
+        "color",
+        "divs thickness"
+      ]
     };
   },
   methods: {
     changeConfigs(config) {
       this.$store.commit("setConfig", config);
+      // this.hideInfo();
     },
     configsToggle() {
       let configs = this.$refs.configs;
       configs.classList.toggle("saved-configs--closed");
     },
     displayInfo(index) {
+      this.index = index + 1;
       let configItem = this.$refs.configItem[index];
       let configItemOffsetTop = configItem.getBoundingClientRect().top;
-      let info = this.$refs.configInfo;
       let infoColor = this.$refs.infoColor;
       infoColor.style.background = this.savedConfigs[index].color + "";
+      let info = this.$refs.configInfo;
       info.style.display = "block";
-      info.style.top = configItemOffsetTop + pageYOffset - 88 + "px";
+      info.style.top =
+        configItemOffsetTop + pageYOffset - 88 - 24 * (this.index - 1) + "px";
+      let infoPointer = this.$refs.infoPointer;
+      infoPointer.style.top = 24 * (this.index - 1) + "px";
       this.infoConfigs = { ...this.savedConfigs[index] };
-      this.index = index + 1;
     },
-    hideInfo(index) {
+    hideInfo() {
       let info = this.$refs.configInfo;
       info.style.display = "none";
     },
@@ -105,7 +118,7 @@ export default {
       localStorage.setItem("pickerPos", JSON.stringify(this.pickerPos));
       localStorage.setItem("savedConfigs", JSON.stringify(this.savedConfigs));
       let saveSession = {
-        message: "Your session is saved.",
+        message: "Your session is saved 🔒",
         type: "info"
       };
       this.$store.commit("setInfo", saveSession);
@@ -151,6 +164,7 @@ export default {
   min-width: 170px;
   width: 12%;
   position: absolute;
+  z-index: 1;
   left: 0;
   top: -22px;
   min-height: calc(100% + 22px);
@@ -160,7 +174,7 @@ export default {
   box-shadow: 0px 3px 6px #c9c9c9;
   box-sizing: border-box;
   padding: 35px 25px;
-  transition: transform 0.2s ease-in-out;
+  transition: transform 0.15s ease-in-out;
 }
 
 .saved-configs--closed {
@@ -229,10 +243,14 @@ export default {
 .saved-configs__item {
   cursor: pointer;
   font-size: 14px;
-  margin-bottom: 10px;
+  margin-bottom: 0px;
   width: 60%;
-  padding-left: 10px;
+  padding: 0 0 10px 10px;
   position: relative;
+}
+
+.saved-configs__item:hover {
+  opacity: 0.6;
 }
 
 .saved-configs__btn {
@@ -263,36 +281,24 @@ export default {
   position: absolute;
   min-width: 190px;
   background: #f9fcff;
-  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+  /* box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16); */
   display: none;
   left: 160px;
   padding: 20px;
   box-sizing: border-box;
   z-index: 5;
+  filter: drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.16));
 }
 
-.config-info:before {
-  content: "";
-  display: block;
+.config-info__pointer {
   position: absolute;
+  clip-path: polygon(0 0, 0% 100%, 100% 100%);
   width: 25px;
   height: 25px;
   background: #f9fcff;
   top: 0;
   left: 0;
   transform: translate(-50%, 5px) rotate(45deg);
-  box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.16);
-}
-
-.config-info:after {
-  content: "";
-  display: block;
-  position: absolute;
-  width: 20px;
-  height: 40px;
-  top: 0;
-  left: 0;
-  background: #f9fcff;
 }
 
 .config-info__name {
@@ -325,13 +331,5 @@ export default {
   position: relative;
   top: 3px;
   left: 3px;
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
-}
-.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
-  opacity: 0;
 }
 </style>

@@ -30,7 +30,7 @@
 export default {
   name: "door",
   props: {
-    infoDemo: Number
+    infoDemoIndex: Number
   },
   data() {
     return {
@@ -45,6 +45,7 @@ export default {
       for (let frame of doorFrames) {
         frame.style.width = this.doorWidth + "px";
         frame.style.height = this.doorHeight + "px";
+        frame.style.borderWidth = this.frameThickness + "px";
       }
     },
     setColor() {
@@ -83,15 +84,15 @@ export default {
   computed: {
     infoMode() {
       let infoMode = false;
-      if (this.infoDemo !== undefined && this.infoDemo !== null) {
+      if (this.infoDemoIndex !== undefined && this.infoDemoIndex !== null) {
         infoMode = true;
       }
       return infoMode;
     },
     door() {
-      let door = undefined;
+      let door;
       if (this.infoMode) {
-        door = this.$store.state.savedConfigs[this.infoDemo - 1];
+        door = this.$store.state.savedConfigs[this.infoDemoIndex - 1];
       } else {
         door = this.$store.state.door;
       }
@@ -121,6 +122,9 @@ export default {
     },
     divThickness() {
       return this.door.divThickness;
+    },
+    frameThickness() {
+      return this.door.frameThickness;
     }
   },
   watch: {
@@ -166,8 +170,8 @@ export default {
   margin-right: 1px;
   max-height: 300px;
   max-width: 160px;
-  min-width: 100px;
-  min-height: 220px;
+  /* min-width: 100px;
+  min-height: 220px; */
 }
 
 .door-beam-wrapper,

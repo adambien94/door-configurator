@@ -31,7 +31,8 @@ export const store = new Vuex.Store({
       beams: 0,
       posts: 0,
       color: "#5A5858",
-      divThickness: 6
+      divThickness: 6,
+      frameThickness: 6
     },
     defaultConfig: {
       width: 120,
@@ -40,7 +41,8 @@ export const store = new Vuex.Store({
       beams: 0,
       posts: 0,
       color: "#5A5858",
-      divThickness: 6
+      divThickness: 6,
+      frameThickness: 6
     },
     // czemu sie kasuje w resetConfig^^^
 

@@ -37,12 +37,12 @@
           <button
             class="configurations__nav__btn configurations__nav__btn--back"
             v-if="configStep > 1"
-            @click="step(-1)"
+            @click="changeStep(-1)"
           >{{ $t("message.back")}}</button>
           <button
             class="configurations__nav__btn"
             :disabled="configStep === 3"
-            @click="step(1)"
+            @click="changeStep(1)"
           >{{ $t("message.nextStep")}}</button>
         </nav>
       </div>
@@ -77,12 +77,11 @@ export default {
   },
   data() {
     return {
-      saveMsg: "Your configs are saved 👍",
-      initialSave: true
+      saveMsg: "Added to your list 👌"
     };
   },
   methods: {
-    step(val) {
+    changeStep(val) {
       this.$store.commit("configStepChange", val);
     },
     saveConfigurations() {
@@ -93,7 +92,6 @@ export default {
       this.$store.commit("setInfo", saveInfo);
       this.infoBarToggle();
       this.$store.commit("addConfig", { ...this.door });
-      this.initialSave = false;
     },
     addToSavedConfigs() {},
     infoBarToggle() {
