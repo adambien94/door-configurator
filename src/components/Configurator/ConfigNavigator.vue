@@ -30,7 +30,7 @@ export default {
   },
   computed: {
     configStep() {
-      return this.$store.state.configStep;
+      return this.$store.getters.getConfigStep;
     }
   }
 };

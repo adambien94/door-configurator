@@ -51,13 +51,13 @@ export default {
   },
   computed: {
     errorBarShow() {
-      return this.$store.state.errorBarShow;
+      return this.$store.getters.getErrorBarShow;
     },
     processingShow() {
-      return this.$store.state.processingShow;
+      return this.$store.getters.getProcessingShow;
     },
     typeInfoShow() {
-      return this.$store.state.typeInfoShow;
+      return this.$store.getters.getTypeInfoShow;
     }
   },
   watch: {

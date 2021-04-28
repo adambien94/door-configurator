@@ -92,9 +92,9 @@ export default {
     door() {
       let door;
       if (this.infoMode) {
-        door = this.$store.state.savedConfigs[this.infoDemoIndex - 1];
+        door = this.$store.getters.getSavedConfigs[this.infoDemoIndex - 1];
       } else {
-        door = this.$store.state.door;
+        door = this.$store.getters.getDoor;
       }
       return door;
     },

@@ -136,20 +136,20 @@ export default {
   },
   computed: {
     savedConfigs() {
-      return this.$store.state.savedConfigs;
+      return this.$store.getters.getSavedConfigs;
     },
-    test() {
-      return this.$store.state.savedConfigs.length;
+    savedConfigsLength() {
+      return this.$store.getters.getSavedConfigs.length;
     },
     door() {
-      return this.$store.state.door;
+      return this.$store.getters.getDoor;
     },
     pickerPos() {
-      return this.$store.state.pickerPos;
+      return this.$store.getters.getPickerPos;
     }
   },
   watch: {
-    test() {
+    savedConfigsLength() {
       this.configs = this.savedConfigs;
     }
   },

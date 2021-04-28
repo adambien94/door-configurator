@@ -38,10 +38,13 @@ export default {
   },
   computed: {
     typeInfoShow() {
-      return this.$store.state.typeInfoShow;
+      return this.$store.getters.getTypeInfoShow;
+    },
+    door() {
+      return this.$store.getters.getDoor;
     },
     doorType() {
-      return this.$store.state.door.type;
+      return this.door.type;
     }
   },
   watch: {

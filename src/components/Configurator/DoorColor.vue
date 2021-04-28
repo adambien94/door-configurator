@@ -49,11 +49,14 @@ export default {
     }
   },
   computed: {
+    door() {
+      return this.$store.getters.getDoors;
+    },
     doorColor() {
-      return this.$store.state.door.color;
+      return this.door.color;
     },
     customColor() {
-      return this.$store.state.customColor;
+      return this.$store.getters.getCustomColor;
     }
   },
   watch: {

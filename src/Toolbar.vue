@@ -72,10 +72,10 @@ export default {
   },
   computed: {
     loggedIn() {
-      return this.$store.state.loggedIn;
+      return this.$store.getters.getLoggedIn;
     },
     token() {
-      return this.$store.state.token;
+      return this.$store.getters.getToken;
     }
   },
   watch: {

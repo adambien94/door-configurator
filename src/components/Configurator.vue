@@ -105,19 +105,19 @@ export default {
   },
   computed: {
     configStep() {
-      return this.$store.state.configStep;
+      return this.$store.getters.getConfigStep;
     },
     door() {
-      return this.$store.state.door;
+      return this.$store.getters.getDoor;
     },
     defaultConfig() {
-      return this.$store.state.defaultConfig;
+      return this.$store.getters.getDefaultConfig;
     },
     pickerPos() {
-      return this.$store.state.pickerPos;
+      return this.$store.getters.getPickerPos;
     },
     savedConfigs() {
-      return this.$store.state.savedConfigs;
+      return this.$store.getters.getSavedConfigs;
     }
   },
   created() {

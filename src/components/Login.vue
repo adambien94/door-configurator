@@ -74,22 +74,22 @@ export default {
   },
   computed: {
     errorBarShow() {
-      return this.$store.state.errorBarShow;
+      return this.$store.getters.getErrorBarShow;
     },
     configuratorPath() {
-      return this.$store.state.configuratorPath;
+      return this.$store.gettere.configuratorPath;
     },
     processingShow() {
-      return this.$store.state.processingShow;
+      return this.$store.getters.getProcessingShow;
     },
     configuratorPath() {
-      return this.$store.state.configuratorPath;
+      return this.$store.getters.getConfiguratorPath;
     },
     token() {
-      return this.$store.state.token;
+      return this.$store.getters.getToken;
     },
     rememberMe() {
-      return this.$store.state.rememberMe;
+      return this.$store.getters.getRememberMe;
     }
   },
   watch: {

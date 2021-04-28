@@ -19,7 +19,6 @@ export default {
   methods: {
     barToggle() {
       this.$store.commit("errorBar", false);
-      console.log(this.$store.state.errorBarShow);
     },
     setBarColor() {
       let bar = this.$refs.infoBar;

@@ -27,7 +27,7 @@ export default {
   methods: {
     switchMode(mode) {
       this.$store.commit("storeDemoMode", mode);
-      console.log(this.$store.state.demoMode);
+      console.log(this.$store.getters.getDemoMode);
     }
   }
 };

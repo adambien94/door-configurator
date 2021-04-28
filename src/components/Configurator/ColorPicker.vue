@@ -101,7 +101,7 @@ export default {
   },
   computed: {
     pickerPos() {
-      return this.$store.state.pickerPos;
+      return this.$store.getters.getPickerPos;
     }
   },
   watch: {

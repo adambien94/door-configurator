@@ -44,7 +44,7 @@ export default {
   },
   computed: {
     configuratorPath() {
-      return this.$store.state.configuratorPath;
+      return this.$store.getters.getConfiguratorPath;
     }
   }
 };

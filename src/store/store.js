@@ -48,6 +48,22 @@ export const store = new Vuex.Store({
 
     savedConfigs: JSON.parse(localStorage.getItem("savedConfigs")) || []
   },
+  getters: {
+    getDoor: state => state.door,
+    getDefaultConfig: state => state.defaultConfig,
+    getErrorBarShow: state => state.errorBarShow,
+    getProcessingShow: state => state.processingShow,
+    getConfiguratorPath: state => state.configuratorPath,
+    getLoggedIn: state => state.loggedIn,
+    getRemember: state => state.remember,
+    getTypeInfoShow: state => state.typeInfoShow,
+    getConfigStep: state => state.configStep,
+    getDemoMode: state => state.demoMode,
+    getRememberMe: state => state.rememberMe,
+    getCustomColor: state => state.customColor,
+    getPickerPos: state => state.pickerPos,
+    getSavedConfigs: state => state.savedConfigs,
+  },
   actions: {
     closeInfoBar: (context, time) => {
       setTimeout(() => {

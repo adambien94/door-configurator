@@ -525,28 +525,28 @@ export default {
   },
   computed: {
     door() {
-      return this.$store.state.door;
+      return this.$store.getters.getDoor;
     },
     type() {
-      return this.$store.state.door.type;
+      return this.door.type;
     },
     width() {
-      return this.$store.state.door.width;
+      return this.door.width;
     },
     height() {
-      return this.$store.state.door.height;
+      return this.door.height;
     },
     beams() {
-      return this.$store.state.door.beams;
+      return this.door.beams;
     },
     posts() {
-      return this.$store.state.door.posts;
+      return this.door.posts;
     },
     divThickness() {
-      return this.$store.state.door.divThickness;
+      return this.door.divThickness;
     },
     color() {
-      return this.$store.state.door.color;
+      return this.door.color;
     }
   },
   watch: {
