@@ -1,13 +1,13 @@
 <template>
   <div id="doorSize">
-    <span class="configurator-heading">{{$t("message.doorSize")}}</span>
+    <span class="configurator-heading">{{$t("message.doorSize") }}</span>
     <form action class="size-form">
       <fieldset class="size-form__field">
-        {{$t("message.width")}}:
+        {{$t("message.width") + ""}}:
         <input
           type="number"
           class="size-form__input"
-          v-model="doorWidth"
+          v-model="width"
           min="100"
           max="160"
         />
@@ -17,7 +17,7 @@
         <input
           type="number"
           class="size-form__input"
-          v-model="doorHeight"
+          v-model="height"
           min="220"
           max="300"
         />
@@ -29,30 +29,28 @@
 <script>
 export default {
   name: "doorSize",
+  props: ['configWidth', 'configHeight'],
   data() {
     return {
-      doorWidth: 0,
-      doorHeight: 0
+      width: 0,
+      height: 0
     };
   },
-  computed: {
-    myWidth() {
-      return this.$store.state.door.width;
-    },
-    myHeight() {
-      return this.$store.state.door.height;
-    }
-  },
-  created() {
-    this.doorWidth = this.myWidth;
-    this.doorHeight = this.myHeight;
+  mounted() {
+    this.setDimensions();
   },
   watch: {
-    doorWidth() {
-      this.$store.commit("storeWidth", this.doorWidth);
+    width() {
+      this.$store.commit("setDoorWidth", this.width);
     },
-    doorHeight() {
-      this.$store.commit("storeHeight", this.doorHeight);
+    height() {
+      this.$store.commit("setDoorHeight", this.height);
+    }
+  },
+  methods: {
+    setDimensions() {
+      this.width = this.configWidth;
+      this.height = this.configHeight;
     }
   }
 };
@@ -64,7 +62,7 @@ export default {
 }
 
 .size-form__field {
-  color: #848c93;
+  color: #b7bbc8;
   margin-bottom: 9px;
   position: relative;
   width: 154px;
@@ -75,13 +73,15 @@ export default {
 
 .size-form__input {
   width: 30px;
-  font-size: 12px;
+  font-size: 15px;
   line-height: 16px;
-  color: #848c93;
+  color: #b7bbc8;
   padding: 3px 0px 3px 4px;
-  width: 40px;
+  width: 45px;
   position: absolute;
   right: 30px;
+  background: transparent;
+  border-radius: 5px;
 }
 
 .size-form__field:after {

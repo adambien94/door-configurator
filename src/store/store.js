@@ -1,138 +1,137 @@
 import Vue from "vue";
 import Vuex from "vuex";
-
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   state: {
-    errorBarShow: false,
-    info: {
+    isInfoBarShown: false,
+    infoBarMessage: {
       message: "",
       type: "error"
     },
-    processingShow: false,
+    isProcessingShown: false,
     configuratorPath: "configurator",
-    loggedIn: false,
-    remember: false,
+    isUserLogged: false,
     token: "",
-    typeInfoShow: false,
+    isInfoModalShown: false,
     configStep: 1,
     demoMode: 1,
-    rememberMe: false || JSON.parse(localStorage.getItem("rememberMe")),
+    shouldRememberUser: false || JSON.parse(localStorage.getItem("shouldRememberUser")),
     customColor: null,
-    pickerPos: JSON.parse(localStorage.getItem("pickerPos")) || {
+    pickerPosition: JSON.parse(localStorage.getItem("pickerPosition")) || {
       x: 50,
       y: 38
     },
-    door: JSON.parse(localStorage.getItem("myDoor")) || {
+    doorConfig: JSON.parse(localStorage.getItem("myDoor")) || {
       width: 120,
       height: 250,
       type: 1,
       beams: 0,
       posts: 0,
-      color: "#5A5858",
+      color: "#c6bbdd",
       divThickness: 6,
       frameThickness: 6
     },
-    defaultConfig: {
+    doorIndex: 0,
+    defaultDoorConfig: {
       width: 120,
       height: 250,
       type: 1,
       beams: 0,
       posts: 0,
-      color: "#5A5858",
+      color: "#c6bbdd",
       divThickness: 6,
       frameThickness: 6
     },
-    // czemu sie kasuje w resetConfig^^^
-
     savedConfigs: JSON.parse(localStorage.getItem("savedConfigs")) || []
   },
   getters: {
-    getDoor: state => state.door,
-    getDefaultConfig: state => state.defaultConfig,
-    getErrorBarShow: state => state.errorBarShow,
-    getProcessingShow: state => state.processingShow,
-    getConfiguratorPath: state => state.configuratorPath,
-    getLoggedIn: state => state.loggedIn,
-    getRemember: state => state.remember,
-    getTypeInfoShow: state => state.typeInfoShow,
+    getDoorConfig: state => state.doorConfig,
+    getDoorIndex: state => state.doorIndex,
+    getDefaultConfig: state => state.defaultDoorConfig,
+    getInfoBarMessage: state => state.infoBarMessage,
+    getIsInfoBarShown: state => state.isInfoBarShown,
+    getIsProcessingShown: state => state.isProcessingShown,
+    getIsUserLogged: state => state.isUserLogged,
+    getIsInfoModalShown: state => state.isInfoModalShown,
     getConfigStep: state => state.configStep,
     getDemoMode: state => state.demoMode,
-    getRememberMe: state => state.rememberMe,
+    getShouldRememberUser: state => state.shouldRememberUser,
     getCustomColor: state => state.customColor,
-    getPickerPos: state => state.pickerPos,
+    getPickerPosition: state => state.pickerPosition,
     getSavedConfigs: state => state.savedConfigs,
   },
   actions: {
     closeInfoBar: (context, time) => {
       setTimeout(() => {
-        context.commit("errorBar", false);
+        context.commit("toggleInfoBar", false);
       }, time);
     }
   },
   mutations: {
-    errorBar: (state, bool) => {
-      state.errorBarShow = bool;
+    toggleInfoBar: (state, payload) => {
+      state.isInfoBarShown = payload;
     },
-    typeInfo: (state, bool) => {
-      state.typeInfoShow = bool;
+    toggleInfoModal: (state, payload) => {
+      state.isInfoModalShown = payload;
     },
-    setInfo: (state, information) => {
-      state.info = {
-        message: information.message,
-        type: information.type
+    setInfoBarMessage: (state, payload) => {
+      state.infoBarMessage = {
+        message: payload.message,
+        type: payload.type
       };
     },
-    processing: (state, bool) => {
-      state.processingShow = bool;
+    processing: (state, payload) => {
+      state.isProcessingShown = payload;
     },
-    validSucces: (state, bool) => {
-      state.valid = bool;
+    validSucces: (state, payload) => {
+      state.valid = payload;
     },
-    logged: (state, bool) => {
-      state.loggedIn = bool;
+    logged: (state, payload) => {
+      state.isUserLogged = payload;
     },
-
-    storeToken: (state, token) => {
-      state.token = token;
+    storeToken: (state, payload) => {
+      state.token = payload;
     },
-    storeWidth: (state, width) => {
-      state.door.width = width;
+    setDoorWidth: (state, payload) => {
+      state.doorConfig.width = payload;
     },
-    storeHeight: (state, height) => {
-      state.door.height = height;
+    setDoorHeight: (state, payload) => {
+      state.doorConfig.height = payload;
     },
-    storeType: (state, type) => {
-      state.door.type = type;
+    setDoorType: (state, payload) => {
+      state.doorConfig.type = payload;
     },
-    storeBeams: (state, num) => {
-      state.door.beams = num;
+    storeBeams: (state, payload) => {
+      state.doorConfig.beams = payload;
     },
-    storePosts: (state, num) => {
-      state.door.posts = num;
+    storePosts: (state, payload) => {
+      state.doorConfig.posts = payload;
     },
-    storeColor: (state, color) => {
-      state.door.color = color;
+    storeColor: (state, payload) => {
+      state.doorConfig.color = payload;
     },
-    storeDivThickness: (state, val) => {
-      state.door.divThickness = val;
+    storeDivThickness: (state, payload) => {
+      state.doorConfig.divThickness = payload;
     },
-    configStepChange: (state, val) => {
-      state.configStep += val;
+    configStepChange: (state, payload) => {
+      state.configStep += payload;
     },
-    storeDemoMode: (state, num) => {
-      state.demoMode = num;
+    storeDemoMode: (state, payload) => {
+      state.demoMode = payload;
     },
-    storeCustomColor: (state, col) => {
-      state.customColor = col;
+    storeCustomColor: (state, payload) => {
+      state.customColor = payload;
     },
-    storePickerPos: (state, newPos) => {
-      state.pickerPos.x = newPos.x;
-      state.pickerPos.y = newPos.y;
+    setDoorIndex: (state, payload) => {
+      state.doorIndex = payload;
+    },
+    storePickerPos: (state, payload) => {
+      state.pickerPosition.x = payload.x;
+      state.pickerPosition.y = payload.y;
     },
     resetConfig: state => {
-      state.door = {
+      state.doorConfig = {
         width: 120,
         height: 250,
         type: 1,
@@ -142,25 +141,14 @@ export const store = new Vuex.Store({
         divThickness: 6
       };
     },
-    setConfig: (state, config) => {
-      state.door = config;
+    setConfig: (state, payload) => {
+      state.doorConfig = payload;
     },
-    addConfig: (state, config) => {
-      state.savedConfigs.push(config);
+    addConfig: (state, payload) => {
+      state.savedConfigs.push(payload);
     },
     clearSavedConfigs: state => {
       state.savedConfigs = [];
     }
-    // deleteConfig: (state, config) => {
-    //   let index = state.savedConfigs.indexOf(config);
-    //   state.savedConfigs.splice(index, 1);
-    // }
-    // storeHeight: (state, height) => {
-    //   state.width = height;
-    // },
-    // updateConfiguratorPath: (state, width, height) => {
-    //   state.configuratorPath =
-    //     "http://localhost:8080/?#/configurator/" + width + "/" + height;
-    // }
   }
 });

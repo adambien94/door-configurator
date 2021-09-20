@@ -14,7 +14,7 @@
         :placeholder="$t('message.password') "
         v-model="password"
       />
-      <input type="checkbox" id="keep-me" v-model="remember" />
+      <input type="checkbox" id="keep-me" v-model="shouldKeepUserLogged" />
       <label for="keep-me" class="log-form__checkbox">{{ $t("message.remember") }}</label>
       <input
         type="submit"
@@ -34,12 +34,40 @@ export default {
       email: "login@applover.pl",
       password: "password123",
       serverResponse: "",
-      remember: false
+      shouldKeepUserLogged: false,
+      configuratorPath: "configurator"
     };
+  },
+  computed: {
+    isProcessingShown() {
+      return this.$store.getters.getIsProcessingShown;
+    },
+    token() {
+      return this.$store.getters.getToken;
+    },
+    shouldRememberUser() {
+      return this.$store.getters.getShouldRememberUser;
+    }
+  },
+  watch: {
+    isProcessingShown(isShown) {
+      if (!isShown) {
+        this.validation();
+      }
+    },
+    shouldKeepUserLogged() {
+      localStorage.setItem("shouldRememberUser", JSON.stringify(this.shouldKeepUserLogged));
+    }
+  },
+  // DO ZMIANY
+  created() {
+    if (this.shouldRememberUser) {
+      this.$router.push(this.configuratorPath);
+    }
   },
   methods: {
     post() {
-      this.$store.commit("errorBar", false);
+      this.$store.commit("toggleInfoBar", false);
       this.$store.commit("processing", true);
       this.$http
         .post("https://bench-api.applover.pl/api/v1/login", {
@@ -53,58 +81,22 @@ export default {
     },
     validation() {
       if (this.serverResponse === "200 OK") {
-        this.validSucced();
+        this.onValidationSuccess();
       } else {
-        this.validError();
+        this.onValidationError();
       }
     },
-    validSucced() {
-      this.$store.commit("errorBar", false);
+    onValidationSuccess() {
+      this.$store.commit("toggleInfoBar", false);
       this.$router.push(this.configuratorPath);
     },
-    validError() {
-      let info = {
+    onValidationError() {
+      this.$store.commit("setInfoBarMessage", {
         message: this.$t("message.loginError"),
         type: "error"
-      };
-      this.$store.commit("setInfo", info);
-      this.$store.commit("errorBar", true);
+      });
+      this.$store.commit("toggleInfoBar", true);
       this.$store.dispatch("closeErrorBar", 3000);
-    }
-  },
-  computed: {
-    errorBarShow() {
-      return this.$store.getters.getErrorBarShow;
-    },
-    configuratorPath() {
-      return this.$store.gettere.configuratorPath;
-    },
-    processingShow() {
-      return this.$store.getters.getProcessingShow;
-    },
-    configuratorPath() {
-      return this.$store.getters.getConfiguratorPath;
-    },
-    token() {
-      return this.$store.getters.getToken;
-    },
-    rememberMe() {
-      return this.$store.getters.getRememberMe;
-    }
-  },
-  watch: {
-    processingShow() {
-      if (this.processingShow === false) {
-        this.validation();
-      }
-    },
-    remember() {
-      localStorage.setItem("rememberMe", JSON.stringify(this.remember));
-    }
-  },
-  created() {
-    if (this.rememberMe) {
-      this.$router.push(this.configuratorPath);
     }
   }
 };

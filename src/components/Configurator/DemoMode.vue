@@ -38,44 +38,27 @@ export default {
   position: absolute;
   top: 20px;
   right: 35px;
-  border: 1px solid #6f91aa;
+  border: 3px solid #ae63e4;
   display: flex;
-  background: #d8d8d8;
+  border-radius: 5px;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.3);
 }
 
 .mode {
   border: none;
-  border-right: 1px solid #6f91aa;
-}
-
-.mode:last-child {
-  border-right: none;
 }
 
 .mode__radio {
   display: block;
   padding: 3px 8px;
-  color: #6f91aa;
+  color: #fff;
+  font-weight: bold;
   cursor: pointer;
   position: relative;
-}
-
-.mode__radio:after {
-}
-
-.radio:checked + .mode__radio:after {
-  content: "";
-  display: block;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  box-sizing: border-box;
-  border: 1px solid #6f91aa;
+  color: #fff;
 }
 
 .radio:checked + .mode__radio {
-  background: #fff;
+  background: #ae63e4;
 }
 </style>

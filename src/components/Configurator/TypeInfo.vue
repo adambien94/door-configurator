@@ -4,8 +4,8 @@
       <h1 class="info__heading">{{ $t("message.doorType") }}</h1>
       <div @click="closeInfoWindow" class="info__close"></div>
       <div class="info__box-wrapper">
-        <div class="info__type-box" v-for="val in types">
-          <span class="info__type-box__type">{{ $t("message." + val) }}</span>
+        <div class="info__type-box" v-for="(type, index) in types" :key="'type' + index">
+          <span class="info__type-box__type">{{ $t("message." + type) }}</span>
           <div class="info__type-box__illustration"></div>
         </div>
       </div>
@@ -23,12 +23,7 @@ export default {
   },
   methods: {
     closeInfoWindow() {
-      this.$store.commit("typeInfo", false);
-    }
-  },
-  computed: {
-    typeInfoShow() {
-      return this.$store.state.typeInfoShow;
+      this.$store.commit("toggleInfoModal", false);
     }
   }
 };
@@ -51,20 +46,22 @@ export default {
 .info {
   width: 813px;
   height: 432px;
-  background: #ffffff;
+  background: #2d303a;
+  border-radius: 11px;
   box-sizing: border-box;
-  border: 1px solid #7998b0;
   padding: 29px;
   position: relative;
+  box-shadow: 0 7px 7px rgba(0, 0, 0, 0.13);
 }
 
 .info__heading {
   font-size: 24px;
   line-height: 32px;
-  color: #6f91aa;
   font-weight: normal;
   padding-bottom: 7px;
-  border-bottom: 1px solid #6f91aa;
+  border-bottom: 3px solid #f7dd3f;
+  color: #fff;
+  font-weight: bold;
 }
 
 .info__box-wrapper {
@@ -83,14 +80,13 @@ export default {
   text-align: center;
   font-size: 18px;
   line-height: 24px;
-  color: #6f91aa;
   padding: 20px 0;
 }
 
 .info__type-box__illustration {
   width: 100%;
   height: 229px;
-  background: #d8d8d8;
+  background: #fff;
 }
 
 .info__close {
@@ -113,7 +109,7 @@ export default {
   content: "";
   display: block;
   position: absolute;
-  background: #6f91aa;
+  background: #aaaebc;
 }
 
 .info__close:after {

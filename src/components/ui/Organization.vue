@@ -14,10 +14,6 @@
 <script>
 export default {
   name: "organization",
-
-  data() {
-    return {};
-  }
 };
 </script>
 
@@ -29,7 +25,8 @@ export default {
   top: calc(100% + 32px);
   right: 65px;
   z-index: 5;
-  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+  box-shadow: 0px 23px 33px rgba(0, 0, 0, 0.9);
+  border-radius: 11px;
 }
 
 .organization:before {
@@ -41,7 +38,7 @@ export default {
   background: #fff;
   right: 40px;
   transform: translate(0, -50%) rotate(45deg);
-  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.13);
 }
 
 .organization:after {
@@ -63,7 +60,7 @@ export default {
 }
 
 p {
-  color: #7e7e7e;
+  color: #000;
   padding: 30px 35px;
 }
 </style>

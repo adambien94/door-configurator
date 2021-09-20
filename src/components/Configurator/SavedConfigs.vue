@@ -1,25 +1,24 @@
 <template>
   <div id="saved-configs" class="saved-configs" ref="configs">
-    <div class="saved-configs__toggle" @click="configsToggle()"></div>
-    <span class="saved-configs__heading">Your Configs:</span>
-    <ul class="saved-configs__list">
-      <li
-        class="saved-configs__item"
-        v-for="(config, index) in configs"
-        @click="changeConfigs(configs[index])"
-        @mouseover="displayInfo(index)"
-        @mouseleave="hideInfo(index)"
-        ref="configItem"
-      >Config {{index + 1}}</li>
-    </ul>
+    <div class="configs-wrapper">
+      <div class="saved-configs__toggle" @click="configsToggle()"></div>
+      <span class="saved-configs__heading">Your Configs:</span>
+      <ul class="saved-configs__list">
+        <li
+          class="saved-configs__item"
+          v-for="(config, index) in configs"
+          @click="changeConfigs(index)"
+          @mouseover="displayInfo(index)"
+          @mouseleave="hideInfo(index)"
+          ref="configItem"
+          :key="'item' + index"
+        >Config {{index + 1}}</li>
+      </ul>
+    </div>
     <div class="config-info" ref="configInfo">
       <div class="config-info__pointer" ref="infoPointer"></div>
       <span class="config-info__name">Config {{index}}</span>
       <ul class="config-info__list">
-        <!-- <li v-for="(val, key, index) in infoConfigs" class="config-info__item">
-          {{infoProperties[index]}}:
-          <span class="config-info__value" ref="heh">{{val}}</span>
-        </li>-->
         <li class="config-info__item">
           Width:
           <span class="config-info__value">{{infoConfigs.width}}</span>
@@ -51,15 +50,15 @@
       </ul>
       <door :infoDemoIndex="index"></door>
     </div>
-    <button
-      class="saved-configs__btn saved-configs__btn--primary"
-      @click="saveSession()"
-    >save configs</button>
-    <button class="saved-configs__btn saved-configs__btn--danger" @click="clearSession()">clear</button>
+    <div class="saved-configs__btn-wrapper">
+      <button
+        class="saved-configs__btn saved-configs__btn--primary"
+        @click="saveSession()"
+      >Save configs</button>
+      <button class="saved-configs__btn saved-configs__btn--danger" @click="clearSession()">Clear</button>
+    </div>
   </div>
 </template>
-
-
 
 <script>
 import Door from "./Door.vue";
@@ -86,54 +85,6 @@ export default {
       ]
     };
   },
-  methods: {
-    changeConfigs(config) {
-      this.$store.commit("setConfig", config);
-      // this.hideInfo();
-    },
-    configsToggle() {
-      let configs = this.$refs.configs;
-      configs.classList.toggle("saved-configs--closed");
-    },
-    displayInfo(index) {
-      this.index = index + 1;
-      let configItem = this.$refs.configItem[index];
-      let configItemOffsetTop = configItem.getBoundingClientRect().top;
-      let infoColor = this.$refs.infoColor;
-      infoColor.style.background = this.savedConfigs[index].color + "";
-      let info = this.$refs.configInfo;
-      info.style.display = "block";
-      info.style.top =
-        configItemOffsetTop + pageYOffset - 88 - 24 * (this.index - 1) + "px";
-      let infoPointer = this.$refs.infoPointer;
-      infoPointer.style.top = 24 * (this.index - 1) + "px";
-      this.infoConfigs = { ...this.savedConfigs[index] };
-    },
-    hideInfo() {
-      let info = this.$refs.configInfo;
-      info.style.display = "none";
-    },
-    saveSession() {
-      localStorage.setItem("myDoor", JSON.stringify(this.door));
-      localStorage.setItem("pickerPos", JSON.stringify(this.pickerPos));
-      localStorage.setItem("savedConfigs", JSON.stringify(this.savedConfigs));
-      let saveSession = {
-        message: "Your session is saved 🔒",
-        type: "info"
-      };
-      this.$store.commit("setInfo", saveSession);
-      this.infoBarToggle();
-    },
-    clearSession() {
-      localStorage.setItem("savedConfigs", JSON.stringify(""));
-      localStorage.setItem("myDoor", JSON.stringify(""));
-      this.$store.commit("clearSavedConfigs");
-    },
-    infoBarToggle() {
-      this.$store.commit("errorBar", true);
-      this.$store.dispatch("closeInfoBar", 2200);
-    }
-  },
   computed: {
     savedConfigs() {
       return this.$store.getters.getSavedConfigs;
@@ -141,11 +92,11 @@ export default {
     savedConfigsLength() {
       return this.$store.getters.getSavedConfigs.length;
     },
-    door() {
-      return this.$store.getters.getDoor;
+    doorConfig() {
+      return this.$store.getters.getDoorConfig;
     },
-    pickerPos() {
-      return this.$store.getters.getPickerPos;
+    pickerPosition() {
+      return this.$store.getters.getPickerPosition;
     }
   },
   watch: {
@@ -155,6 +106,50 @@ export default {
   },
   created() {
     this.configs = this.savedConfigs;
+  },
+  methods: {
+    changeConfigs(index) {
+      this.$store.commit("setDoorIndex", index);
+      this.$store.commit("setConfig", this.configs[index]);
+    },
+    configsToggle() {
+      let configs = this.$refs.configs;
+      configs.classList.toggle("saved-configs--closed");
+    },
+    displayInfo(index) {
+      this.index = index + 1;
+      let infoColor = this.$refs.infoColor;
+      infoColor.style.background = this.savedConfigs[index].color + "";
+      let info = this.$refs.configInfo;
+      info.style.display = "block";
+      let infoPointer = this.$refs.infoPointer;
+      infoPointer.style.top = 58 + 29 * (this.index - 1) + "px";
+      this.infoConfigs = { ...this.savedConfigs[index] };
+    },
+    hideInfo() {
+      let info = this.$refs.configInfo;
+      info.style.display = "none";
+    },
+    saveSession() {
+      localStorage.setItem("myDoor", JSON.stringify(this.doorConfig));
+      localStorage.setItem("pickerPosition", JSON.stringify(this.pickerPosition));
+      localStorage.setItem("savedConfigs", JSON.stringify(this.savedConfigs));
+      let saveSession = {
+        message: "Your session is saved 🔒",
+        type: "info"
+      };
+      this.$store.commit("setInfoBarMessage", saveSession);
+      this.infoBarToggle();
+    },
+    clearSession() {
+      localStorage.setItem("savedConfigs", JSON.stringify(""));
+      localStorage.setItem("myDoor", JSON.stringify(""));
+      this.$store.commit("clearSavedConfigs");
+    },
+    infoBarToggle() {
+      this.$store.commit("toggleInfoBar", true);
+      this.$store.dispatch("closeInfoBar", 2200);
+    }
   }
 };
 </script>
@@ -162,23 +157,29 @@ export default {
 <style scoped>
 .saved-configs {
   min-width: 170px;
-  width: 12%;
-  position: absolute;
+  width: 200px;
+  position: fixed;
   z-index: 1;
   left: 0;
-  top: -22px;
-  min-height: calc(100% + 22px);
-  height: calc(100vh - 80px);
-  background: #f6f6f6;
-  border-right: 1px solid #e6e6e6;
-  box-shadow: 0px 3px 6px #c9c9c9;
+  top: 65px;
+  height: calc(100vh - 60px);
+  background: #131417;
   box-sizing: border-box;
-  padding: 35px 25px;
-  transition: transform 0.15s ease-in-out;
+  padding: 35px 25px 5px 25px;
+  transition: all 0.35s ease-in-out;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+.configs-wrapper {
+  flex: 1;
 }
 
 .saved-configs--closed {
-  transform: translateX(calc(-100% + 30px));
+  transform: translateX(calc(-100% + 40px));
+  padding-left: 0;
+  padding-right: 50px;
 }
 
 .saved-configs__toggle {
@@ -195,12 +196,12 @@ export default {
 .saved-configs__toggle:after {
   content: "";
   display: block;
-  width: 12px;
-  height: 2px;
+  width: 15px;
+  height: 3px;
   position: absolute;
-  left: 50%;
+  left: 10%;
   top: 50%;
-  background: #c9c9c9;
+  background: #aaaebc;
   transition: transform 0.2s ease-in-out;
 }
 
@@ -209,12 +210,12 @@ export default {
 }
 
 .saved-configs--closed .saved-configs__toggle:before {
-  width: 8px;
-  transform: translate(-50%, calc(-50% - 2px)) rotate(45deg);
+  width: 10px;
+  transform: translate(-50%, calc(-50% - 3px)) rotate(45deg);
 }
 
 .saved-configs--closed .saved-configs__toggle:after {
-  width: 8px;
+  width: 10px;
   transform: translate(-50%, calc(-50% + 2px)) rotate(-45deg);
 }
 
@@ -224,25 +225,23 @@ export default {
 
 .saved-configs__heading {
   display: inline-block;
-  font-weight: normal;
+  font-weight: 600;
   font-size: 14px;
   line-height: 19px;
-  color: #848c93;
   width: 100%;
   padding-bottom: 7px;
-  border-bottom: 1px solid #f0f0f0;
-  font-size: 14px;
+  border-bottom: 3px solid #f7dd3f;
+  font-size: 19px;
 }
 
 .saved-configs__list {
   list-style: none;
-  color: #6f91aa;
-  margin: 30px 0;
+  margin: 20px 0;
 }
 
 .saved-configs__item {
   cursor: pointer;
-  font-size: 14px;
+  font-size: 15px;
   margin-bottom: 0px;
   width: 60%;
   padding: 0 0 10px 10px;
@@ -255,55 +254,60 @@ export default {
 
 .saved-configs__btn {
   display: block;
-  margin-left: 10px;
+  font-family: "Rubik", sans-serif;
   margin-bottom: 10px;
-  font-size: 8px;
+  font-size: 15px;
   line-height: 10px;
-  text-transform: uppercase;
-  padding: 6px 19px;
-  color: #fff;
-  font-weight: 600;
-  border-radius: 4px;
+  font-weight: bold;
+  border-radius: 5px;
   border: none;
   cursor: pointer;
-  width: 100px;
+  width: 100%;
+  padding: 13px 0;
 }
 
 .saved-configs__btn--primary {
-  background: #6f91aa;
+  background: transparent;
+  border: 3px solid #76daff;
+  color: #fff;
 }
 
 .saved-configs__btn--danger {
-  background: #e07b87;
+  color: #76daff;
+  background: transparent;
 }
 
 .config-info {
-  position: absolute;
+  position: fixed;
+  top: 90px;
   min-width: 190px;
-  background: #f9fcff;
-  /* box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16); */
+  background:#fff;
   display: none;
+  border-radius: 11px;
   left: 160px;
   padding: 20px;
   box-sizing: border-box;
+  color: #000;
   z-index: 5;
-  filter: drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.16));
+  /* filter: drop-shadow(0px 23px 33px rgba(0, 0, 0, 0.9)); */
+  box-shadow: 0px 23px 33px rgba(0, 0, 0, 0.9);
 }
 
 .config-info__pointer {
   position: absolute;
-  clip-path: polygon(0 0, 0% 100%, 100% 100%);
-  width: 25px;
-  height: 25px;
-  background: #f9fcff;
+  /* border-radius: 11px; */
+  width: 11px;
+  height: 11px;
+  background: #fff;
   top: 0;
   left: 0;
   transform: translate(-50%, 5px) rotate(45deg);
+  /* box-shadow: 0 2px 7px rgba(0, 0, 0, 0.9); */
 }
 
 .config-info__name {
-  color: #6f91aa;
-  text-decoration: underline;
+  /* color: #e62e74; */
+  font-weight: 600;
 }
 
 .config-info__list {
@@ -313,13 +317,12 @@ export default {
 
 .config-info__item {
   margin-bottom: 4px;
-  font-size: 13px;
+  font-size: 15px;
 }
 
 .config-info__value {
-  color: #6f91aa;
   padding-left: 2px;
-  font-weight: 500;
+  font-weight: bold;
 }
 
 .config-info__color {

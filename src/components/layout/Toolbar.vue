@@ -1,8 +1,8 @@
 <template>
   <div id="toolbar" class="bar">
-    <img src="./assets/Logo.png" class="logo" />
+    <img src="https://cpwebassets.codepen.io/assets/packs/vue-logo-7acfd91310ad2aa8593915dd904cf269.svg" class="logo" />
     <div class="tools">
-      <label for="language" class="tools__select-label">{{ $t("message.selectLanguage")}}:</label>
+      <label for="language" class="tools__select-label">{{ $t("message.selectLanguage")}}</label>
       <div
         class="tools__select"
         :class="{'tools__select--opened' : selectShow}"
@@ -12,10 +12,11 @@
         <transition name="select-transition">
           <ul class="select__list" v-if="selectShow">
             <li
-              v-for="(lang, i) in langs"
+              v-for="(lang, index) in langs"
               class="select__item"
               :class="{ 'select__item--active' : lang === $i18n.locale}"
               @click="setLanguage(lang)"
+              :key="index"
             >{{ $t("languages." + lang)}}</li>
           </ul>
         </transition>
@@ -23,6 +24,7 @@
       <div class="btn-wrapper">
         <div
           class="tools__my-organization"
+          ref="organizationBtn"
           @click="organizationShow = !organizationShow"
         >{{ $t("message.myOrganization")}}</div>
         <transition name="organization-transition">
@@ -34,9 +36,8 @@
 </template>
 
 <script>
-import Organization from "./Organization.vue";
-import i18n from "./main";
-import translation from "./translation";
+import Organization from "../ui/Organization.vue";
+import translation from "../../translation";
 
 export default {
   name: "toolbar",
@@ -50,42 +51,23 @@ export default {
       selectShow: false
     };
   },
-  methods: {
-    setLanguage(lang) {
-      this.$i18n.locale = lang;
-    }
-  },
-  get() {
-    // this.$http
-    //   .post("http://127.0.0.1:8000/api/address/store", address_data, {
-    //     headers: { Authorization: "Bearer " + this.$auth.getToken() }
-    //   })
-    //   .then(
-    //     response => {},
-    //     response => {
-    //       if (response.status == 422) {
-    //         console.log("hello");
-    //         console.log(response);
-    //       }
-    //     }
-    //   );
-  },
   computed: {
-    loggedIn() {
-      return this.$store.getters.getLoggedIn;
+    isLoggedIn() {
+      return this.$store.getters.getIsUserLogged;
     },
     token() {
       return this.$store.getters.getToken;
     }
   },
   watch: {
-    loggedIn() {
-      const organizationBtn = document.querySelector(".tools__my-organization");
-      if (this.loggedIn) {
-        organizationBtn.style.visibility = "visible";
-      } else {
-        organizationBtn.style.visibility = "hidden";
-      }
+    isLoggedIn() {
+      const { organizationBtn } = this.$refs;
+      organizationBtn.style.visibility = this.isLoggedIn ? "visible" : "hidden";
+    }
+  },
+  methods: {
+    setLanguage(lang) {
+      this.$i18n.locale = lang;
     }
   }
 };
@@ -93,12 +75,13 @@ export default {
 
 <style scoped>
 .bar {
-  background: #fff;
-  height: 80px;
+  background: #2d303a;
+  padding: 10px 0;
   width: 100%;
-  box-shadow: 0px 3px 12px #c9c9c9;
-  position: relative;
+  position: fixed;
+  top: 0;
   z-index: 2;
+  box-shadow: 0 7px 7px rgba(0, 0, 0, 0.1);
 }
 
 .logo {
@@ -106,7 +89,7 @@ export default {
   height: 47px;
   position: absolute;
   left: 107px;
-  top: 18px;
+  top: 9px;
 }
 
 .tools {
@@ -119,16 +102,19 @@ export default {
 
 .tools__my-organization {
   background: yellow;
-  margin-right: 64px;
-  padding: 5px 8px 6px 8px;
-  background: #77779d;
-  border-radius: 3px;
+  margin-right: 10px;
+  padding: 13px 0;
+  background: #444857;
+  border-radius: 4px;
   text-decoration: none;
-  color: #ffffff;
+  color: #fff;
   border: none;
   cursor: pointer;
   position: relative;
   visibility: hidden;
+  width: 150px;
+  text-align: center;
+  font-size: 15px;
 }
 
 .btn-wrapper {
@@ -158,13 +144,15 @@ export default {
 
 .tools__select {
   position: relative;
-  border: 1px solid #909090;
-  border-radius: 3px;
-  padding: 5px 0 4px 16px;
-  margin: 0 19px;
-  color: var(--main-font);
+  /* border: 1px solid #909090; */
+  background: #47cf73;
+  border-radius: 4px;
+  padding: 13px 0 13px 16px;
+  margin: 0 10px;
+  color: #000;
   cursor: pointer;
   width: 96px;
+  font-size: 15px;
 }
 
 .tools__select:after {
@@ -172,8 +160,8 @@ export default {
   display: block;
   width: 7px;
   height: 7px;
-  border-bottom: 2px solid #909090;
-  border-left: 2px solid #909090;
+  border-bottom: 2px solid #000;
+  border-left: 2px solid #000;
   position: absolute;
   top: 50%;
   right: 12px;
@@ -195,14 +183,15 @@ export default {
   list-style: none;
   width: 100%;
   left: -1px;
-  border: 1px solid #909090;
-  border-radius: 3px;
+  border-radius: 4px;
   overflow: hidden;
+  color: #000;
+  box-shadow: 0px 23px 33px rgba(0, 0, 0, 0.9);
   /* display: none; */
 }
 
 .select__item {
-  padding: 5px 0px 4px 16px;
+  padding: 7px 0px 7px 16px;
   position: relative;
   /* background: #f4f4f4; */
 }
@@ -214,8 +203,8 @@ export default {
   width: 4px;
   height: 9px;
   top: 8px;
-  border-right: 2px solid #909090;
-  border-bottom: 2px solid #909090;
+  border-right: 2px solid #000;
+  border-bottom: 2px solid #000;
   transform: rotate(45deg);
 }
 

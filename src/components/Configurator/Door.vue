@@ -39,6 +39,76 @@ export default {
       // ^^ obadaj gdzie to dac i wyciagnij w doorSize
     };
   },
+  computed: {
+    infoMode() {
+      let infoMode = false;
+      if (this.infoDemoIndex !== undefined && this.infoDemoIndex !== null) {
+        infoMode = true;
+      }
+      return infoMode;
+    },
+    doorConfig() {
+      let door;
+      if (this.infoMode) {
+        door = this.$store.getters.getSavedConfigs[this.infoDemoIndex - 1];
+      } else {
+        door = this.$store.getters.getDoorConfig;
+      }
+      return door;
+    },
+    doorWidth() {
+      return this.doorConfig.width;
+    },
+    doorHeight() {
+      return this.doorConfig.height;
+    },
+    doorType() {
+      return this.doorConfig.type;
+    },
+    doorBeams() {
+      return this.doorConfig.beams;
+    },
+    doorPosts() {
+      return this.doorConfig.posts;
+    },
+    topDim() {
+      let dim = this.doorWidth * this.doorType;
+      return dim;
+    },
+    doorColor() {
+      return this.doorConfig.color;
+    },
+    divThickness() {
+      return this.doorConfig.divThickness;
+    },
+    frameThickness() {
+      return this.doorConfig.frameThickness;
+    }
+  },
+  watch: {
+    doorWidth() {
+      this.updateDimentions();
+    },
+    doorHeight() {
+      this.updateDimentions();
+    },
+    doorColor() {
+      this.setColor();
+    },
+    divThickness() {
+      this.setThickness();
+    }
+  },
+  mounted() {
+    this.updateDimentions();
+    this.setColor();
+    this.setThickness();
+  },
+  updated() {
+    this.updateDimentions();
+    this.setColor();
+    this.setThickness();
+  },
   methods: {
     updateDimentions() {
       let doorFrames = this.$refs.doorFrames;
@@ -80,76 +150,6 @@ export default {
         }
       }
     }
-  },
-  computed: {
-    infoMode() {
-      let infoMode = false;
-      if (this.infoDemoIndex !== undefined && this.infoDemoIndex !== null) {
-        infoMode = true;
-      }
-      return infoMode;
-    },
-    door() {
-      let door;
-      if (this.infoMode) {
-        door = this.$store.getters.getSavedConfigs[this.infoDemoIndex - 1];
-      } else {
-        door = this.$store.getters.getDoor;
-      }
-      return door;
-    },
-    doorWidth() {
-      return this.door.width;
-    },
-    doorHeight() {
-      return this.door.height;
-    },
-    doorType() {
-      return this.door.type;
-    },
-    doorBeams() {
-      return this.door.beams;
-    },
-    doorPosts() {
-      return this.door.posts;
-    },
-    topDim() {
-      let dim = this.doorWidth * this.doorType;
-      return dim;
-    },
-    doorColor() {
-      return this.door.color;
-    },
-    divThickness() {
-      return this.door.divThickness;
-    },
-    frameThickness() {
-      return this.door.frameThickness;
-    }
-  },
-  watch: {
-    doorWidth() {
-      this.updateDimentions();
-    },
-    doorHeight() {
-      this.updateDimentions();
-    },
-    doorColor() {
-      this.setColor();
-    },
-    divThickness() {
-      this.setThickness();
-    }
-  },
-  mounted() {
-    this.updateDimentions();
-    this.setColor();
-    this.setThickness();
-  },
-  updated() {
-    this.updateDimentions();
-    this.setColor();
-    this.setThickness();
   }
 };
 </script>
@@ -179,30 +179,35 @@ export default {
   width: 100%;
   height: 100%;
   position: absolute;
-  top: 0;
-  left: 0;
   display: flex;
   justify-content: space-evenly;
 }
 
 .door-beam-wrapper {
   flex-direction: column;
+  top: 0;
+  left: -1px;
+}
+
+.door-post-wrapper {
+  top: -1px;
+  left: 0;
 }
 
 .door-beam {
-  width: 100%;
+  width: calc(100% + 2px);
   background: var(--doorCol);
 }
 
 .door-post {
-  height: 100%;
+  height: calc(100% + 2px);
   background: var(--doorCol);
 }
 
 .vertical-dim-wrapper {
   position: absolute;
   top: -6px;
-  left: -36px;
+  left: -42px;
   height: calc(100% + 12px);
 }
 
@@ -214,7 +219,7 @@ export default {
 }
 
 .vertical-dim {
-  width: 1px;
+  width: 3px;
   height: 100%;
 }
 
@@ -224,12 +229,14 @@ export default {
   background: red;
   position: absolute;
   transform: translate(-50%, -50%);
-  color: #848c93;
-  background: #fff;
-  border: 1px solid #848c93;
-  font-size: 12px;
+  color: #fff;
+  background: #2d303a;
+  border: 3px solid #2d303a;
+  font-size: 15px;
+  font-weight: bold;
   line-height: 14px;
-  padding: 1px 8px;
+  padding: 3px 8px;
+  /* border-radius: 5px; */
 }
 
 .vertical-dim__dim {
@@ -243,7 +250,7 @@ export default {
   display: block;
   position: relative;
   width: 18px;
-  height: 1px;
+  height: 3px;
   background: #848c93;
   left: 0;
   transform: translateX(-50%);
@@ -254,7 +261,7 @@ export default {
 }
 
 .vertical-dim:after {
-  top: calc(100% - 2px);
+  top: calc(100% - 6px);
 }
 
 .bottom-dim-wrapper {
@@ -268,7 +275,7 @@ export default {
 }
 
 .bottom-dim-wrapper {
-  bottom: -30px;
+  bottom: -35px;
   left: -6px;
 }
 
@@ -278,7 +285,7 @@ export default {
 
 .top-dim-wrapper .top-dim,
 .bottom-dim {
-  height: 1px;
+  height: 3px;
   width: 100%;
 }
 
@@ -289,7 +296,7 @@ export default {
   content: "";
   display: inline-block;
   position: relative;
-  width: 1px;
+  width: 3px;
   height: 18px;
   background: #848c93;
   top: 0;
@@ -303,7 +310,7 @@ export default {
 
 .top-dim:after,
 .bottom-dim:after {
-  left: calc(100% - 2px);
+  left: calc(100% - 6px);
 }
 
 .top-dim__dim,

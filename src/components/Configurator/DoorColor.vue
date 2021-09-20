@@ -22,23 +22,39 @@
 <script>
 export default {
   name: "door-color",
+  props: ["configColor"],
   data() {
     return {
       doorWidth: 0,
       doorHeight: 0,
       test: false,
       colors: {
-        black: "#191919",
-        gray: "#5A5858",
+        gray: "#c6bbdd",
         white: "#F4F2F2",
-        blue: "#6991B2",
-        green: "seagreen",
-        gold: "gold",
+        blue: "#355dff",
+        green: "#47cf73",
+        gold: "#f7dd3f",
         coral: "coral",
         custom: null
       },
       myCol: null
     };
+  },
+  computed: {
+    customColor() {
+      return this.$store.getters.getCustomColor;
+    }
+  },
+  watch: {
+    customColor() {
+        this.setCustomColor();
+        this.storeColor(this.customColor);
+        this.myCol = this.customColor;
+    }
+  },
+  mounted() {
+    this.myCol = this.configColor;
+    this.setCustomColor();
   },
   methods: {
     storeColor(col) {
@@ -47,36 +63,6 @@ export default {
     setCustomColor() {
       this.colors.custom = this.customColor;
     }
-  },
-  computed: {
-    door() {
-      return this.$store.getters.getDoors;
-    },
-    doorColor() {
-      return this.door.color;
-    },
-    customColor() {
-      return this.$store.getters.getCustomColor;
-    }
-  },
-  watch: {
-    customColor() {
-      if (this.test) {
-        this.setCustomColor();
-        this.storeColor(this.customColor);
-        this.myCol = this.customColor;
-      }
-    },
-    doorColor() {
-      this.myCol = this.doorColor;
-    }
-  },
-  created() {
-    this.myCol = this.doorColor;
-    this.setCustomColor();
-  },
-  mounted() {
-    this.test = true;
   }
 };
 </script>
@@ -99,13 +85,13 @@ export default {
   width: 35px;
   height: 35px;
   border-radius: 50%;
-  background: lightgrey;
+  background: red;
   margin-left: 6px;
 }
 
 .color-form__radio {
   display: inline-block;
-  color: #848c93;
+  color: #b7bbc8;
   position: relative;
   cursor: default;
   padding-left: 19px;
@@ -127,11 +113,11 @@ export default {
   width: 15px;
   height: 15px;
   box-sizing: border-box;
-  border: 3px solid #cddbe5;
+  border: 3px solid #b7bbc8;
 }
 
 .color-form__radio:after {
-  background: #6991b2;
+  background: #b7bbc8;
   width: 7px;
   height: 7px;
   left: 4px;

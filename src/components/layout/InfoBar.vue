@@ -1,7 +1,7 @@
 <template>
-  <div id="errorbar" class="bar" ref="infoBar">
+  <div id="info-bar" class="bar" ref="infoBar">
     <div class="bar-container">
-      <span class="error-msg">{{ info.message }}</span>
+      <span class="error-msg">{{ infoBarMessage.message }}</span>
       <div class="close" @click="barToggle()"></div>
     </div>
   </div>
@@ -9,33 +9,33 @@
 
 <script>
 export default {
-  name: "errorbar",
+  name: "info-bar",
   data() {
     return {
       errorCol: "#f24e33",
       infoCol: "#1de278"
     };
   },
+  computed: {
+    infoBarMessage() {
+      return this.$store.getters.getInfoBarMessage;
+    }
+  },
+  mounted() {
+    this.setBarColor();
+  },
   methods: {
     barToggle() {
-      this.$store.commit("errorBar", false);
+      this.$store.commit("toggleInfoBar", false);
     },
     setBarColor() {
       let bar = this.$refs.infoBar;
-      if (this.info.type === "error") {
+      if (this.infoBarMessage.type === "error") {
         bar.style.background = this.errorCol;
       } else {
         bar.style.background = this.infoCol;
       }
     }
-  },
-  computed: {
-    info() {
-      return this.$store.state.info;
-    }
-  },
-  mounted() {
-    this.setBarColor();
   }
 };
 </script>
@@ -70,7 +70,7 @@ export default {
   right: 31px;
   width: 14px;
   height: 14px;
-  background: url("./assets/close.png");
+  background: url("../../assets/img/close.png");
   background-size: cover;
   cursor: pointer;
 }

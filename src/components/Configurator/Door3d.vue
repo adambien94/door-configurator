@@ -45,6 +45,65 @@ export default {
       scale: 0.03
     };
   },
+  computed: {
+    doorConfig() {
+      return this.$store.getters.getDoorConfig;
+    },
+    type() {
+      return this.doorConfig.type;
+    },
+    width() {
+      return this.doorConfig.width;
+    },
+    height() {
+      return this.doorConfig.height;
+    },
+    beams() {
+      return this.doorConfig.beams;
+    },
+    posts() {
+      return this.doorConfig.posts;
+    },
+    divThickness() {
+      return this.doorConfig.divThickness;
+    },
+    color() {
+      return this.doorConfig.color;
+    }
+  },
+  watch: {
+    type() {
+      this.updateDoor();
+    },
+    width() {
+      this.updateDoor();
+    },
+    height() {
+      this.updateDoor();
+    },
+    beams() {
+      this.updateDoor();
+    },
+    posts() {
+      this.updateDoor();
+    },
+    divThickness() {
+      this.updateDoor();
+    },
+    color() {
+      this.updateDoor();
+    }
+  },
+  created() {
+    this.doorWidth = this.doorConfig.width * this.scale;
+    this.doorHeight = this.doorConfig.height * this.scale;
+    this.doorDepth = 6 * this.scale;
+    this.doorNum = this.doorConfig.type;
+  },
+  mounted() {
+    this.setCanvas();
+    this.drawDoor();
+  },
   methods: {
     setCanvas() {
       this.canvasWindow = document.getElementById("canvas-window");
@@ -108,7 +167,7 @@ export default {
       this.animate();
     },
     drawWalls() {
-      let path = require("../.././assets/floor.png");
+      let path = require("../.././assets/img/floor.png");
       let texture = new THREE.TextureLoader().load(path);
       this.meshFloor = new THREE.Mesh(
         new THREE.PlaneGeometry(20, 20, 10, 10),
@@ -125,7 +184,7 @@ export default {
       this.meshSilling = new THREE.Mesh(
         new THREE.PlaneGeometry(20, 20, 10, 10),
         new THREE.MeshPhongMaterial({
-          color: 0xeeeeee
+          color: 0xf9f9f9
         })
       );
       this.meshSilling.position.y = 10;
@@ -139,7 +198,7 @@ export default {
       this.meshWallFrontRight = new THREE.Mesh(
         new THREE.PlaneGeometry(20, 10),
         new THREE.MeshPhongMaterial({
-          color: 0xeeeeee,
+          color: 0xf9f9f9,
           wireframe: false
         })
       );
@@ -156,7 +215,7 @@ export default {
       this.meshWallFrontLeft = new THREE.Mesh(
         new THREE.PlaneGeometry(20, 10),
         new THREE.MeshPhongMaterial({
-          color: 0xeeeeee,
+          color: 0xf9f9f9,
           wireframe: false
         })
       );
@@ -173,7 +232,7 @@ export default {
       this.meshWall = new THREE.Mesh(
         new THREE.PlaneGeometry(20, 10),
         new THREE.MeshPhongMaterial({
-          color: 0xeeeeee,
+          color: 0xf9f9f9,
           wireframe: false
         })
       );
@@ -198,7 +257,7 @@ export default {
       this.meshWallBack = new THREE.Mesh(
         new THREE.PlaneGeometry(20, 10),
         new THREE.MeshPhongMaterial({
-          color: 0xeeeeee,
+          color: 0xf9f9f9,
           wireframe: false
         })
       );
@@ -211,7 +270,7 @@ export default {
       this.meshWallLeft = new THREE.Mesh(
         new THREE.PlaneGeometry(20, 10),
         new THREE.MeshPhongMaterial({
-          color: 0xeeeeee,
+          color: 0xf9f9f9,
           wireframe: false
         })
       );
@@ -224,7 +283,7 @@ export default {
       this.meshWallRight = new THREE.Mesh(
         new THREE.PlaneGeometry(20, 10),
         new THREE.MeshPhongMaterial({
-          color: 0xeeeeee,
+          color: 0xf9f9f9,
           wireframe: false
         })
       );
@@ -341,17 +400,17 @@ export default {
     drawDoor() {
       let doorBeam;
       let doorPost;
-      this.doorWidth = this.door.width * this.scale;
-      this.doorHeight = this.door.height * this.scale;
+      this.doorWidth = this.doorConfig.width * this.scale;
+      this.doorHeight = this.doorConfig.height * this.scale;
       this.doorDepth = 6 * this.scale;
-      this.beamsNum = this.door.beams;
-      this.postNum = this.door.posts;
-      this.doorNum = this.door.type;
+      this.beamsNum = this.doorConfig.beams;
+      this.postNum = this.doorConfig.posts;
+      this.doorNum = this.doorConfig.type;
       this.doorPosX =
         (this.doorWidth / 2) * this.doorNum +
         (this.doorDepth / 2) * this.doorNum;
-      this.doorColor = this.door.color;
-      this.doorDivDepth = this.door.divThickness * this.scale;
+      this.doorColor = this.doorConfig.color;
+      this.doorDivDepth = this.doorConfig.divThickness * this.scale;
 
       for (let i = 0; i < this.doorNum; i++) {
         this.doors[i] = {
@@ -522,65 +581,6 @@ export default {
       this.drawDoor();
       this.drawWalls();
     }
-  },
-  computed: {
-    door() {
-      return this.$store.getters.getDoor;
-    },
-    type() {
-      return this.door.type;
-    },
-    width() {
-      return this.door.width;
-    },
-    height() {
-      return this.door.height;
-    },
-    beams() {
-      return this.door.beams;
-    },
-    posts() {
-      return this.door.posts;
-    },
-    divThickness() {
-      return this.door.divThickness;
-    },
-    color() {
-      return this.door.color;
-    }
-  },
-  watch: {
-    type() {
-      this.updateDoor();
-    },
-    width() {
-      this.updateDoor();
-    },
-    height() {
-      this.updateDoor();
-    },
-    beams() {
-      this.updateDoor();
-    },
-    posts() {
-      this.updateDoor();
-    },
-    divThickness() {
-      this.updateDoor();
-    },
-    color() {
-      this.updateDoor();
-    }
-  },
-  created() {
-    this.doorWidth = this.door.width * this.scale;
-    this.doorHeight = this.door.height * this.scale;
-    this.doorDepth = 6 * this.scale;
-    this.doorNum = this.door.type;
-  },
-  mounted() {
-    this.setCanvas();
-    this.drawDoor();
   }
 };
 </script>
@@ -601,6 +601,6 @@ export default {
   left: 30px;
   color: #444444;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: bold;
 }
 </style>

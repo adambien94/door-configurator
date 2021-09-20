@@ -51,24 +51,13 @@
 <script>
 export default {
   name: "door-division",
+  props: ["configBeamsNum", "configPostsNum", "configDivThickness"],
   data() {
     return {
       beamsNum: null,
       postsNum: null,
       thickness: null
     };
-  },
-  methods: {},
-  computed: {
-    beams() {
-      return this.$store.state.door.beams;
-    },
-    posts() {
-      return this.$store.state.door.posts;
-    },
-    divThickness() {
-      return this.$store.state.door.divThickness;
-    }
   },
   watch: {
     postsNum() {
@@ -81,10 +70,15 @@ export default {
       this.$store.commit("storeDivThickness", this.thickness);
     }
   },
-  created() {
-    this.beamsNum = this.beams;
-    this.postsNum = this.posts;
-    this.thickness = this.divThickness;
+  mounted() {
+    this.setConfig();
+  },
+  methods: {
+    setConfig() {
+      this.beamsNum = this.configBeamsNum;
+      this.postsNum = this.configPostsNum;
+      this.thickness = this.configDivThickness;
+    }
   }
 };
 </script>
@@ -96,7 +90,7 @@ export default {
 }
 
 .division-form__field {
-  color: #848c93;
+  color: #b7bbc8;
   margin-bottom: 9px;
   position: relative;
   height: 26px;
@@ -106,11 +100,12 @@ export default {
 }
 
 .division-form__input {
-  width: 24px;
-  height: 24px;
-  border: 1px solid #a8a5a5;
+  width: 26px;
+  height: 26px;
+  border-radius: 5px;
+  border: none;
   font-size: 12px;
-  color: #848c93;
+  color: #000;
   text-align: center;
 }
 
@@ -121,15 +116,16 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 .division-form__btn {
-  width: 25px;
-  height: 25px;
+  width: 26px;
+  height: 26px;
   text-align: center;
-  background: #cddbe5;
-  color: #848c93;
+  background: #f7dd3f;
+  color: #000;
   border: none;
-  margin-left: 4px;
+  margin-left: 1px;
   cursor: pointer;
   transition: opacity 0.1s;
+  border-radius: 5px;
 }
 
 .division-form__label {

@@ -4,7 +4,7 @@
     <span class="info">Processing...</span>
     <div class="process-bar">
       <span class="process-bar__percent">{{percent}}%</span>
-      <div class="progress-bar__progress"></div>
+      <div class="progress-bar__progress" ref="progressBar"></div>
     </div>
   </div>
 </template>
@@ -17,10 +17,13 @@ export default {
       percent: 60
     };
   },
+  mounted() {
+    this.loading();
+  },
   methods: {
     loading() {
       let percentage = 10;
-      const progressBar = document.querySelector(".progress-bar__progress");
+      const { progressBar } = this.$refs;
       let load = setInterval(() => {
         progressBar.style.width = percentage + "%";
         percentage += Math.random() * 2 + 3;
@@ -28,23 +31,8 @@ export default {
         if (percentage >= 98) {
           clearInterval(load);
           this.$store.commit("processing", false);
-          // this.processFinish();
         }
       }, 125);
-    }
-    // processFinish() {
-    //   location.replace(this.configuratorPath);
-    //   this.$store.commit("logged", true);
-    //   this.$store.commit("processing", false);
-    // }
-  },
-
-  mounted() {
-    this.loading();
-  },
-  computed: {
-    configuratorPath() {
-      return this.$store.getters.getConfiguratorPath;
     }
   }
 };

@@ -1,13 +1,11 @@
 <template>
   <div id="doorType">
     <div class="heading-wrapper">
-      <div class="heading-wrapper">
-        <span class="configurator-heading">{{ $t("message.doorType") }}</span>
-        <button class="info-btn" @click="typeInfo()">i</button>
-      </div>
+      <span class="configurator-heading">{{ $t("message.doorType") }}</span>
+      <button class="info-btn" @click="toggleInfoModal">i</button>
     </div>
     <form action class="type-form">
-      <fieldset v-for="(val, index) in types">
+      <fieldset v-for="(val, index) in types" :key="'field' + index">
         <input
           type="radio"
           name="type"
@@ -25,35 +23,29 @@
 <script>
 export default {
   name: "doorType",
+  props: {
+    configType: {
+      type: Number
+    }
+  },
   data() {
     return {
-      type: null,
+      type: 1,
       types: ["singleDoor", "doubleDoor", "tripleDoor"]
     };
   },
-  methods: {
-    typeInfo() {
-      this.$store.commit("typeInfo", true);
-    }
-  },
-  computed: {
-    typeInfoShow() {
-      return this.$store.getters.getTypeInfoShow;
-    },
-    door() {
-      return this.$store.getters.getDoor;
-    },
-    doorType() {
-      return this.door.type;
-    }
+  mounted() {
+    this.type = this.configType;
   },
   watch: {
     type() {
-      this.$store.commit("storeType", this.type);
+      this.$store.commit("setDoorType", this.type);
     }
   },
-  created() {
-    this.type = this.doorType;
+  methods: {
+    toggleInfoModal() {
+      this.$store.commit("toggleInfoModal", true);
+    }
   }
 };
 </script>
@@ -72,17 +64,16 @@ fieldset {
 .info-btn {
   display: block;
   position: absolute;
-  width: 11px;
-  height: 11px;
+  width: 15px;
+  height: 15px;
   border-radius: 50%;
-  background: url("../../assets/info.svg");
+  background: url("../../assets/img/info.svg");
   background-size: cover;
   border: none;
-  /* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ ?? sciezka do img */
-  right: -14px;
-  top: -3px;
+  right: -20px;
+  top: 2px;
   cursor: pointer;
-  font-size: 8px;
+  font-size: 11px;
   color: #fff;
 }
 
@@ -95,7 +86,7 @@ fieldset {
   cursor: default;
   display: block;
   position: relative;
-  margin-left: 20px;
+  margin-left: 24px;
   margin-top: 8px;
 }
 
@@ -113,20 +104,19 @@ fieldset {
   width: 15px;
   height: 15px;
   box-sizing: border-box;
-  border: 3px solid #cddbe5;
-  right: calc(100% + 4.5px);
+  border: 3px solid #b7bbc8;
+  right: calc(100% + 8.5px);
 }
 
 .type-form__radio:after {
-  background: #6991b2;
+  background: #b7bbc8;
   width: 7px;
   height: 7px;
-  right: calc(100% + 8.5px);
-  opacity: 0;
-  /* transition: opacity 0.05s; */
+  right: calc(100% + 12.5px);
+  visibility: hidden;
 }
 
 .radio:checked + .type-form__radio:after {
-  opacity: 1;
+  visibility: visible;
 }
 </style>
