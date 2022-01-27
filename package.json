@@ -12,7 +12,7 @@
   "dependencies": {
     "dat.gui": "^0.7.6",
     "oimo": "^1.0.9",
-    "three": "^0.108.0",
+    "three": "^0.137.0",
     "vue": "^2.5.2",
     "vue-i18n": "^8.14.0",
     "vue-resource": "^1.5.1",
